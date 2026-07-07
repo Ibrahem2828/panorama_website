@@ -1,0 +1,237 @@
+{
+  "site": {
+    "name": "Panorama",
+    "arabicName": "بانوراما",
+    "domain": "https://بانوراما.tech",
+    "title": "Panorama — Smart Academic Platform for University Students",
+    "description": "Panorama is a smart academic platform for university students, combining academic files, student verification, subject groups, printing orders, support tickets, notifications, and admin dashboard operations.",
+    "email": "panoramacompany31@gmail.com",
+    "arabicTitle": "بانوراما — منصة جامعية ذكية للطلاب والخدمات الأكاديمية",
+    "arabicDescription": "بانوراما منصة جامعية ذكية تساعد الطلاب على الوصول إلى الملفات الأكاديمية، توثيق الحساب، المجموعات، طلبات الطباعة، الدعم، الإشعارات، ولوحة الإدارة من مكان واحد."
+  },
+  "nav": {
+    "features": "Features",
+    "mobileApp": "Mobile App",
+    "dashboard": "Dashboard",
+    "security": "Security",
+    "contact": "Contact",
+    "requestDemo": "Request a Demo",
+    "skipToContent": "Skip to content",
+    "switchLanguage": "العربية",
+    "switchLanguageAria": "Switch to Arabic",
+    "switchToEnglish": "English",
+    "switchToEnglishAria": "Switch to English",
+    "toggleTheme": "Toggle theme",
+    "lightMode": "Light mode",
+    "darkMode": "Dark mode",
+    "openMenu": "Open navigation menu",
+    "closeMenu": "Close navigation menu"
+  },
+  "hero": {
+    "badge": "Panorama",
+    "title": "Panorama — The Smart Academic Platform for University Students",
+    "subtitle": "A unified academic ecosystem that connects students, files, groups, printing orders, support, notifications, and university operations in one secure platform.",
+    "cta": "Explore Features",
+    "ctaSecondary": "Request a Demo",
+    "visualAcademicHub": "Academic hub",
+    "visualWorkspace": "Student workspace",
+    "visualVerifiedProfile": "Verified profile",
+    "visualAcademicFiles": "Academic files",
+    "visualSubjectGroups": "Subject groups",
+    "visualPrintingOrders": "Printing orders",
+    "visualNotifications": "Notifications",
+    "visualStructuredUpdates": "Structured updates",
+    "visualAccess": "Access",
+    "visualPermissionBased": "Permission-based flows"
+  },
+  "problem": {
+    "eyebrow": "The challenge",
+    "title": "University life is fragmented.",
+    "description": "Students often rely on scattered chats, unorganized files, unclear announcements, manual printing workflows, and disconnected support channels.",
+    "items": [
+      "Scattered academic files",
+      "Unorganized subject groups",
+      "Manual printing requests",
+      "Unclear announcements",
+      "Disconnected support",
+      "No centralized student verification"
+    ]
+  },
+  "solution": {
+    "eyebrow": "The solution",
+    "title": "Panorama brings academic services into one secure platform.",
+    "description": "Panorama helps universities and students centralize academic resources, verification, communication, printing operations, notifications, and support in one connected ecosystem.",
+    "points": [
+      "Centralized academic resources",
+      "Connected verification and profiles",
+      "Operational tools for support and printing"
+    ]
+  },
+  "features": {
+    "eyebrow": "Platform features",
+    "title": "Everything students and university teams need in one platform.",
+    "items": {
+      "verification": {
+        "title": "Student Verification",
+        "description": "Verify student identity and connect each student to the right university, faculty, specialization, and academic year."
+      },
+      "files": {
+        "title": "Academic Files",
+        "description": "Organize academic files by subjects, groups, faculties, and student access rules."
+      },
+      "media": {
+        "title": "Protected Media Access",
+        "description": "Control access to sensitive academic files and student-related media through secure permission-based flows."
+      },
+      "groups": {
+        "title": "Subject Groups",
+        "description": "Create organized academic communities for subjects, faculties, and student groups."
+      },
+      "printing": {
+        "title": "Printing Orders",
+        "description": "Allow students to request printing services and track order progress from the mobile app."
+      },
+      "support": {
+        "title": "Support Tickets",
+        "description": "Help students report issues and receive structured responses from the support team."
+      },
+      "notifications": {
+        "title": "Smart Notifications",
+        "description": "Notify students about verification updates, printing status, support replies, announcements, and group activity."
+      },
+      "dashboard": {
+        "title": "Admin Dashboard",
+        "description": "Give operational teams the tools to manage verification, files, printing queues, support tickets, and audit logs."
+      },
+      "audit": {
+        "title": "Audit Logs",
+        "description": "Track sensitive administrative actions and improve operational accountability."
+      },
+      "roles": {
+        "title": "Role-Based Access",
+        "description": "Separate permissions for administrators, support teams, and printing staff."
+      }
+    }
+  },
+  "mobile": {
+    "eyebrow": "Student experience",
+    "title": "A simple mobile app for students.",
+    "description": "Panorama gives students a simple mobile experience for subjects, files, groups, printing, notifications, support, and verified academic profiles.",
+    "appTitle": "Student app",
+    "appSubtitle": "A focused academic home for verified students.",
+    "items": [
+      "Access subjects and academic files",
+      "Join organized student groups",
+      "Request printing and track orders",
+      "Receive academic notifications",
+      "Contact support",
+      "Manage a verified academic profile"
+    ]
+  },
+  "dashboard": {
+    "eyebrow": "Operations center",
+    "title": "A powerful dashboard for university operations.",
+    "description": "Panorama gives administrators and operations teams a central place to review verification requests, manage academic files and groups, track printing queues, handle support tickets, view audit logs, and manage role-based permissions.",
+    "badge": "Operations dashboard",
+    "badgeSubtitle": "University workflow view",
+    "items": [
+      "Review verification requests",
+      "Manage academic files",
+      "Manage groups",
+      "Track printing queues",
+      "Handle support tickets",
+      "View audit logs",
+      "Manage roles and permissions"
+    ]
+  },
+  "security": {
+    "eyebrow": "Security approach",
+    "title": "Built with security and controlled access in mind.",
+    "description": "Panorama is designed around controlled access, verification workflows, audit trails, and permission-aware handling of sensitive academic resources. It does not claim certifications or compliance standards in this phase.",
+    "items": [
+      "Protected academic files",
+      "Role-based permissions",
+      "Secure verification workflow",
+      "Audit trails",
+      "Controlled media access",
+      "Safer student resource access"
+    ]
+  },
+  "identity": {
+    "eyebrow": "Academic identity",
+    "title": "A personalized academic identity for every faculty.",
+    "description": "Panorama can support universities, faculties, branches, and specializations with a consistent visual identity, making the student experience more personal, organized, and recognizable.",
+    "items": [
+      "Universities",
+      "Faculties",
+      "Branches",
+      "Specializations"
+    ]
+  },
+  "cta": {
+    "title": "Ready to bring your academic community into one platform?",
+    "subtitle": "Launch a connected academic experience for students, administrators, support teams, and printing operations.",
+    "button": "Request a Demo",
+    "buttonSecondary": "Contact Panorama Team"
+  },
+  "footer": {
+    "description": "Panorama is a smart academic platform for university students and operations teams, connecting files, verification, groups, printing, support, notifications, and controlled access workflows.",
+    "copyright": "© 2026 Panorama. All rights reserved.",
+    "links": {
+      "features": "Features",
+      "security": "Security",
+      "privacy": "Privacy",
+      "terms": "Terms"
+    }
+  },
+  "privacy": {
+    "label": "Privacy",
+    "title": "Privacy Policy",
+    "paragraphs": [
+      "This privacy page is a polished public website placeholder for Panorama. It should be reviewed by qualified legal counsel and adapted to the final production service before official public launch.",
+      "This marketing website is designed to provide public information about Panorama and a way to contact the team. If you email us, we may use the contact details you provide to respond to your request and keep a practical record of that conversation.",
+      "The public website should not collect student records, verification documents, account credentials, or payment data in this phase. A complete privacy policy should be published before any production platform collects account data, student records, verification documents, support details, or operational analytics.",
+      "Before launch, the final policy should describe what information is collected, why it is collected, how it is protected, how long it is retained, and how users or institutions can request support regarding their data.",
+      "For privacy questions, contact"
+    ]
+  },
+  "terms": {
+    "label": "Terms",
+    "title": "Terms of Use",
+    "paragraphs": [
+      "These terms are a practical public website placeholder for Panorama. They are not a complete legal agreement and should be reviewed by qualified legal counsel before official production launch.",
+      "The website is intended to introduce Panorama, its academic platform, and ways to contact the team. It does not provide dashboard access, authentication, student account management, or paid services in this phase.",
+      "Visitors should use the website only for lawful informational and contact purposes. Production terms should define acceptable use, account responsibilities, institutional agreements, data handling, support expectations, service availability, and limits of liability once the platform is launched publicly.",
+      "Any future access to student-facing apps, university dashboards, verification workflows, or operational tools should be governed by dedicated platform terms and institutional agreements.",
+      "For questions, contact"
+    ]
+  },
+  "seo": {
+    "keywords": [
+      "Panorama",
+      "بانوراما",
+      "Panorama app",
+      "Panorama university platform",
+      "University student app",
+      "Academic platform",
+      "Academic files platform",
+      "Student verification system",
+      "University dashboard",
+      "Printing order management",
+      "Protected academic files",
+      "Student support system"
+    ],
+    "arabicKeywords": [
+      "بانوراما",
+      "تطبيق بانوراما",
+      "منصة بانوراما",
+      "منصة جامعية",
+      "تطبيق جامعي للطلاب",
+      "إدارة الملفات الأكاديمية",
+      "توثيق الطلاب",
+      "طلبات الطباعة الجامعية",
+      "لوحة تحكم جامعية",
+      "خدمات الطلاب الأكاديمية"
+    ]
+  }
+}
