@@ -1,50 +1,36 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { Badge } from "@/components/ui/Badge";
 import { Container } from "@/components/ui/Container";
-import { site } from "@/data/site";
+import { GoldThread } from "@/components/ui/GoldThread";
+import { site } from "@/config/site";
+import { pageMeta } from "@/content/page-meta";
+import { localize } from "@/content/types";
+import { createPageMetadata } from "@/lib/metadata";
 
-type PrivacyPageProps = {
-  params: Promise<{ locale: string }>;
-};
+type PrivacyPageProps = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: PrivacyPageProps): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "privacy" });
-  const isArabic = locale === "ar";
-
-  return {
-    title: t("title"),
-    description: isArabic
-      ? "سياسة الخصوصية للموقع التعريفي لمنصة بانوراما الجامعية"
-      : "Privacy policy overview for the Panorama public marketing website.",
-    alternates: {
-      canonical: `${site.domain}/${isArabic ? "ar/" : ""}privacy`,
-    },
-  };
+  return createPageMetadata({ locale, path: "/privacy", meta: localize(pageMeta, locale).privacy });
 }
 
 export default async function PrivacyPage({ params }: PrivacyPageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "privacy" });
-  const siteT = await getTranslations({ locale, namespace: "site" });
-
   const paragraphs = t.raw("paragraphs") as string[];
 
   return (
-    <main className="bg-white py-20 sm:py-28">
-      <Container className="max-w-4xl">
-        <p className="text-sm font-bold uppercase text-panorama-navy">{t("label")}</p>
-        <h1 className="mt-4 text-4xl font-black text-panorama-text sm:text-5xl">{t("title")}</h1>
-        <div className="mt-8 space-y-6 text-base leading-8 text-panorama-muted">
-          {paragraphs.map((para: string, idx: number) => (
-            <p key={idx}>{para}</p>
-          ))}
-          <p>
-            <a className="font-bold text-panorama-navy" href={`mailto:${siteT("email")}`}>
-              {siteT("email")}
-            </a>
-            .
-          </p>
+    <main className="section-shell" id="main-content">
+      <GoldThread className="absolute inset-x-0 top-4 opacity-70" />
+      <Container className="max-w-3xl">
+        <Badge>{t("label")}</Badge>
+        <h1 className="section-title max-w-none">{t("title")}</h1>
+        <div className="surface-card mt-9 p-6 sm:p-9">
+          <div className="space-y-6 text-base leading-8 text-[var(--color-muted)]">
+            {paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+            {site.contact.email ? <p><a className="font-bold text-[var(--color-brand-navy)] underline decoration-[var(--color-brand-gold)] underline-offset-4 dark:text-[var(--color-brand-purple-contrast)]" href={`mailto:${site.contact.email}`}>{site.contact.email}</a></p> : null}
+          </div>
         </div>
       </Container>
     </main>

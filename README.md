@@ -1,65 +1,42 @@
-# Panorama Marketing Website
+# Panorama Website
 
-Official public marketing website for Panorama — بانوراما, a smart academic platform for university students and university operations.
+Public bilingual website for Panorama, a student volunteer community that began at the Syrian Private University. Arabic is the default locale; English is served under `/en`.
 
-This repository contains the public website only. It does not include the dashboard, mobile app, backend APIs, authentication, database, or Vercel deployment.
+## Implemented information architecture
 
-## Stack
+- Home, About, Faculties, individual faculty pages, Services, Initiatives, Volunteer, Platform, Impact, News, Gallery, FAQ, Contact, Privacy, and Terms.
+- Each listed content route has Arabic and English variants through `next-intl` routing.
+- News and Gallery are intentionally empty publishing foundations until approved material is supplied.
+- Contact and volunteer forms are visible static interfaces only; they do not submit data or display a false success state.
 
-- Next.js App Router
-- TypeScript
-- Tailwind CSS
-- ESLint
-- Static-first pages and sections
-- Next.js standalone output for private-server deployment
+## Single source of public configuration
 
-## Local Development
+`src/config/site.ts` owns the public identity, canonical domain, logo paths, contact values, social channels, faculty contact overrides, default Open Graph image, and feature flags. Do not place public contact or social URLs directly in page components.
 
-```bash
-npm install
-npm run dev
-```
+Copy `.env.example` to `.env` only when configuring a deployment. All values are public build-time values, not secrets. Unknown values must remain empty so they stay hidden.
 
-Open `http://localhost:3000`.
-
-## Validation
-
-```bash
-npm run lint
-npm run build
-```
-
-The production build intentionally uses `next build --webpack`. Turbopack hit a Windows filesystem `EPERM` rename issue in the local workspace during Phase 1; webpack is the stable build path for this project unless that environment issue is safely resolved later.
-
-## Project Structure
+## Project structure
 
 ```text
-src/app              App Router pages, metadata, sitemap, robots, global CSS
-src/components       Layout, section, and reusable UI components
-src/data             Site, navigation, and feature content configuration
-src/lib              Shared utilities
-public/brand         Logo assets for final launch
-public/og            OpenGraph image assets for final launch
+src/app                 Localized routes, metadata, sitemap, robots, global CSS
+src/config/site.ts      Single public configuration source
+src/content             Typed Arabic/English content modules and publication states
+src/components          Shared UI, layout, motion, forms, social, and route sections
+src/data/faculties.ts   Faculty data consumed by the reusable faculty-page template
+src/messages            Localized shell and legal-interface messages
+public/Logos            Supplied official master and faculty-logo assets
+docs                    Design, configuration, content, and phase handoff documents
 ```
 
-## Environment
+## Documentation
 
-Copy `.env.example` to `.env` for production builds or Docker Compose deployments:
+- `docs/SITE_CONFIGURATION.md`
+- `docs/SOCIAL_AND_CONTACT_CONFIGURATION.md`
+- `docs/SITE_CONTENT_ARCHITECTURE.md`
+- `docs/FACULTY_PAGE_SYSTEM.md`
+- `docs/CONTENT_TRUTH_AND_APPROVAL_GUIDE.md`
+- `docs/FEATURE_FLAGS.md`
+- `docs/PHASE_2_CLOSURE_REPORT.md`
+- `docs/PHASE_3_RUNTIME_VERIFICATION_PLAN.md`
 
-```bash
-NEXT_PUBLIC_SITE_URL=https://بانوراما.tech
-NEXT_PUBLIC_CONTACT_EMAIL=panoramacompany31@gmail.com
-```
-
-These are public build-time values, not secrets.
-
-## Deployment
-
-Private-server deployment instructions are in `README_DEPLOYMENT.md`.
-
-Before final launch, provide:
-
-- `public/brand/panorama-logo.png`
-- `public/brand/panorama-logo-horizontal.png`
-- `public/brand/logo-mark.png`
-- `public/og/opengraph-image.png`
+Runtime commands were intentionally not run as part of the static Phase 2 implementation. See the closure report and Phase 3 plan before public release.

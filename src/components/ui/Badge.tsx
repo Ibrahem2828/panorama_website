@@ -7,14 +7,5 @@ type BadgeProps = {
 };
 
 export function Badge({ children, className }: BadgeProps) {
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center rounded-full border border-[#BFC0C2]/60 bg-white/90 px-3 py-1 text-sm font-semibold text-panorama-navy shadow-sm dark:border-white/15 dark:bg-white/5 dark:text-white/80",
-        className,
-      )}
-    >
-      {children}
-    </span>
-  );
+  return <span className={cn("eyebrow", className)}>{children}</span>;
 }

@@ -1,24 +1,14 @@
-import Link from "next/link";
+import { LoaderCircle } from "lucide-react";
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from "react";
+import { Link } from "@/i18n/routing";
 import { cn } from "@/lib/cn";
 
 type ButtonVariant = "primary" | "secondary" | "ghost";
 
-const variantClasses: Record<ButtonVariant, string> = {
-  primary:
-    "bg-panorama-navy text-white shadow-card hover:bg-[#06368f] focus-visible:outline-panorama-navy dark:bg-blue-600 dark:hover:bg-blue-500 dark:text-white",
-  secondary:
-    "border border-panorama-silver/80 bg-white text-panorama-navy hover:border-panorama-navy hover:bg-[#F8FAFC] focus-visible:outline-panorama-purple dark:border-white/20 dark:bg-white/5 dark:text-white/80 dark:hover:border-white/40 dark:hover:bg-white/10",
-  ghost:
-    "text-panorama-navy hover:bg-panorama-navy/5 focus-visible:outline-panorama-purple dark:text-white/70 dark:hover:bg-white/5",
-};
-
-const baseClasses =
-  "inline-flex min-h-11 items-center justify-center rounded-full px-5 py-2.5 text-sm font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2";
-
 type SharedProps = {
   children: ReactNode;
   className?: string;
+  isLoading?: boolean;
   variant?: ButtonVariant;
 };
 
@@ -36,43 +26,51 @@ function isLinkButtonProps(props: LinkButtonProps | NativeButtonProps): props is
   return typeof props.href === "string";
 }
 
+function isExternalHref(href: string) {
+  return /^(?:https?:|mailto:|tel:)/.test(href);
+}
+
 export function Button(props: LinkButtonProps | NativeButtonProps) {
-  const { children, className, variant = "primary" } = props;
-  const classes = cn(baseClasses, variantClasses[variant], className);
+  const { children, className, isLoading = false, variant = "primary" } = props;
+  const classes = cn("button-base", `button-${variant}`, className);
+  const content = (
+    <>
+      {isLoading ? <LoaderCircle aria-hidden="true" className="h-4 w-4 animate-panorama-spin" /> : null}
+      {children}
+    </>
+  );
 
   if (isLinkButtonProps(props)) {
-    const {
-      href,
-      children: _linkChildren,
-      className: _linkClassName,
-      variant: _linkVariant,
-      ...linkProps
-    } = props;
-    void _linkChildren;
-    void _linkClassName;
-    void _linkVariant;
+    const { href, children: _children, className: _className, isLoading: _isLoading, variant: _variant, ...linkProps } = props;
+    void _children;
+    void _className;
+    void _isLoading;
+    void _variant;
+
+    if (isExternalHref(href)) {
+      return (
+        <a aria-busy={isLoading || undefined} aria-disabled={isLoading || undefined} className={classes} href={href} {...linkProps}>
+          {content}
+        </a>
+      );
+    }
 
     return (
-      <Link className={classes} href={href} {...linkProps}>
-        {children}
+      <Link aria-busy={isLoading || undefined} aria-disabled={isLoading || undefined} className={classes} href={href} {...linkProps}>
+        {content}
       </Link>
     );
   }
 
-  const {
-    children: _buttonChildren,
-    className: _buttonClassName,
-    variant: _buttonVariant,
-    type = "button",
-    ...buttonProps
-  } = props;
-  void _buttonChildren;
-  void _buttonClassName;
-  void _buttonVariant;
+  const { children: _children, className: _className, isLoading: _isLoading, variant: _variant, type = "button", disabled, ...buttonProps } = props;
+  void _children;
+  void _className;
+  void _isLoading;
+  void _variant;
 
   return (
-    <button className={classes} type={type} {...buttonProps}>
-      {children}
+    <button aria-busy={isLoading || undefined} className={classes} disabled={disabled || isLoading} type={type} {...buttonProps}>
+      {content}
     </button>
   );
 }

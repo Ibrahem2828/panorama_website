@@ -1,44 +1,11 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
+import { AnimatedReveal } from "@/components/motion/AnimatedReveal";
+import { SocialLinks } from "@/components/social/SocialLinks";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { site } from "@/data/site";
+import { GoldThread } from "@/components/ui/GoldThread";
+import { homeContent } from "@/content/home";
 
-export function CTASection() {
-  const t = useTranslations("cta");
-
-  return (
-    <section className="bg-panorama-background py-16 sm:py-20 dark:bg-white/[0.02]" id="contact">
-      <Container>
-        <div className="relative overflow-hidden rounded-2xl bg-panorama-navy px-6 py-12 text-center text-white shadow-soft sm:px-10 sm:py-16 dark:bg-blue-600/20 dark:border dark:border-blue-500/20">
-          <div className="absolute inset-0 opacity-35 panorama-grid" />
-          <div className="absolute inset-0 bg-gradient-to-br from-panorama-purple/10 via-transparent to-panorama-burgundy/10 dark:from-purple-500/10 dark:to-rose-500/10" />
-          <div className="relative mx-auto max-w-3xl">
-            <h2 className="text-3xl font-black sm:text-4xl lg:text-5xl">
-              {t("title")}
-            </h2>
-            <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-white/75 sm:text-lg">
-              {t("subtitle")}
-            </p>
-            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-              <Button
-                className="bg-white text-panorama-navy hover:bg-slate-100 dark:bg-white dark:text-panorama-navy"
-                href={`mailto:${site.email}?subject=Panorama%20Demo%20Request`}
-              >
-                {t("button")}
-              </Button>
-              <Button
-                className="border-white/35 bg-transparent text-white hover:bg-white/10 dark:border-white/25"
-                href={`mailto:${site.email}?subject=Contact%20Panorama%20Team`}
-                variant="secondary"
-              >
-                {t("buttonSecondary")}
-              </Button>
-            </div>
-          </div>
-        </div>
-      </Container>
-    </section>
-  );
-}
+export function CTASection() { const locale = useLocale(); const siteLocale = locale === "en" ? "en" : "ar"; const content = homeContent[siteLocale].contact; return <section aria-labelledby="contact-title" className="section-shell" id="contact"><Container><div className="relative overflow-hidden rounded-[var(--radius-xl)] bg-[linear-gradient(135deg,var(--color-brand-navy-deep)_0%,var(--color-brand-navy)_43%,var(--color-brand-purple)_100%)] px-6 py-14 text-center text-white shadow-[var(--shadow-raised)] sm:px-10 sm:py-20"><GoldThread className="absolute inset-x-0 top-6 opacity-90" /><div aria-hidden="true" className="absolute -start-20 -bottom-28 h-72 w-72 rounded-full border border-[var(--color-brand-gold)] opacity-35" /><div aria-hidden="true" className="absolute -end-16 -top-16 h-48 w-48 rounded-full bg-[var(--color-brand-burgundy)] opacity-25 blur-3xl" /><AnimatedReveal className="relative mx-auto max-w-3xl"><p className="text-sm font-extrabold text-[var(--color-brand-gold-contrast)]">{content.eyebrow}</p><h2 className="mt-4 text-3xl font-extrabold leading-tight sm:text-5xl" id="contact-title">{content.title}</h2><p className="mt-5 text-base leading-8 text-white/76 sm:text-lg">{content.description}</p><div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row"><Button className="bg-[var(--color-surface)] text-[var(--color-brand-navy)] hover:bg-[var(--color-background)]" href="/contact">{content.primaryCta}</Button><Button className="border-white/35 bg-transparent text-white hover:border-[var(--color-brand-gold-contrast)] hover:bg-white/10" href="/faq" variant="secondary">{content.secondaryCta}</Button></div><SocialLinks className="mt-7 justify-center" tone="inverse" /></AnimatedReveal></div></Container></section>; }

@@ -1,19 +1,28 @@
 export type NavItem = {
-  labelKey: string;
+  key: "home" | "about" | "faculties" | "services" | "initiatives" | "volunteer" | "platform" | "contact";
   href: string;
 };
 
 export const navItems: NavItem[] = [
-  { labelKey: "nav.features", href: "/#features" },
-  { labelKey: "nav.mobileApp", href: "/#mobile-app" },
-  { labelKey: "nav.dashboard", href: "/#dashboard" },
-  { labelKey: "nav.security", href: "/#security" },
-  { labelKey: "nav.contact", href: "/#contact" },
+  { key: "home", href: "/" },
+  { key: "about", href: "/about" },
+  { key: "faculties", href: "/faculties" },
+  { key: "services", href: "/services" },
+  { key: "initiatives", href: "/initiatives" },
+  { key: "volunteer", href: "/volunteer" },
+  { key: "platform", href: "/platform" },
+  { key: "contact", href: "/contact" },
 ];
 
-export const footerLinks: NavItem[] = [
-  { labelKey: "footer.links.features", href: "/#features" },
-  { labelKey: "footer.links.security", href: "/#security" },
-  { labelKey: "footer.links.privacy", href: "/privacy" },
-  { labelKey: "footer.links.terms", href: "/terms" },
-];
+export const footerLinks = [
+  { key: "about", href: "/about" },
+  { key: "faculties", href: "/faculties" },
+  { key: "services", href: "/services" },
+  { key: "initiatives", href: "/initiatives" },
+  { key: "volunteer", href: "/volunteer" },
+  { key: "platform", href: "/platform" },
+  { key: "faq", href: "/faq" },
+  { key: "contact", href: "/contact" },
+  { key: "privacy", href: "/privacy" },
+  { key: "terms", href: "/terms" },
+] as const;

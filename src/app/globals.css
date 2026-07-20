@@ -3,30 +3,70 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a;
-  --muted: #64748b;
-  --card: #ffffff;
-  --card-border: #e2e8f0;
-  --card-bg-alt: #f8fafc;
-  --primary: #002b7f;
-  --secondary: #3b0ca3;
-  --accent: #a50d46;
-  --silver: #bfc0c2;
+  --color-brand-navy: #002b7f;
+  --color-brand-purple: #3b0ca3;
+  --color-brand-burgundy: #a50d46;
+  --color-brand-silver: #bfc0c2;
+  --color-brand-gold: #c9a227;
+  --color-brand-gold-soft: #e4cb74;
+  --color-brand-gold-contrast: #f0d77b;
+  --color-brand-navy-deep: #071b56;
+  --color-footer: #07122f;
+  --color-brand-purple-contrast: #d9ceff;
+  --color-success: #227a59;
+  --color-warning: #a96400;
+  --color-danger: #b4234a;
+  --color-background: #f8fafc;
+  --color-background-subtle: #f1f5f9;
+  --color-foreground: #152033;
+  --color-muted: #536275;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #ffffff;
+  --color-surface-strong: #ecf1f8;
+  --color-border: #dbe3ee;
+  --color-focus: #3b0ca3;
+  --color-on-brand: #ffffff;
+  --shadow-xs: 0 1px 2px rgb(15 23 42 / 0.06);
+  --shadow-card: 0 18px 45px -30px rgb(0 27 114 / 0.28), 0 3px 10px -5px rgb(15 23 42 / 0.12);
+  --shadow-raised: 0 28px 80px -38px rgb(16 24 40 / 0.34);
+  --radius-sm: 0.625rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2rem;
+  --container-wide: 80rem;
+  --content-gutter: clamp(1.125rem, 3vw, 2rem);
+  --duration-fast: 160ms;
+  --duration-normal: 280ms;
+  --duration-slow: 560ms;
+  --ease-standard: cubic-bezier(0.2, 0.7, 0, 1);
+  --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+  --z-header: 40;
+  --z-overlay: 60;
+  --z-splash: 80;
+  --faculty-informatics: #5b31b2;
+  --faculty-foundations: #637184;
+  --faculty-petroleum: #bd6a24;
+  --faculty-clinical: #b7345d;
+  --faculty-pharmacy: #2d8a62;
+  --faculty-medicine: #a92455;
+  --faculty-dentistry: #168b9c;
+  --faculty-business: #9c6a25;
   color-scheme: light;
 }
 
 .dark {
-  --background: #0b1026;
-  --foreground: #f1f5f9;
-  --muted: #94a3b8;
-  --card: rgba(255, 255, 255, 0.04);
-  --card-border: rgba(255, 255, 255, 0.08);
-  --card-bg-alt: rgba(255, 255, 255, 0.03);
-  --primary: #3b82f6;
-  --secondary: #8b5cf6;
-  --accent: #f43f5e;
-  --silver: #94a3b8;
+  --color-background: #0b1026;
+  --color-background-subtle: #101936;
+  --color-foreground: #f4f7fb;
+  --color-muted: #b5c0d1;
+  --color-surface: #121c38;
+  --color-surface-elevated: #182443;
+  --color-surface-strong: #202e52;
+  --color-border: rgb(214 227 255 / 0.14);
+  --color-focus: #d9c15e;
+  --color-on-brand: #ffffff;
+  --shadow-card: 0 18px 46px -30px rgb(0 0 0 / 0.62), 0 3px 10px -5px rgb(0 0 0 / 0.28);
+  --shadow-raised: 0 32px 80px -38px rgb(0 0 0 / 0.72);
   color-scheme: dark;
 }
 
@@ -35,14 +75,33 @@
 }
 
 html {
+  min-width: 320px;
   scroll-behavior: smooth;
+  scroll-padding-top: 6.75rem;
 }
 
 body {
+  min-width: 320px;
   margin: 0;
-  background: var(--background);
-  color: var(--foreground);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: clip;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans), Inter, ui-sans-serif, system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
+  transition: background-color var(--duration-normal) var(--ease-standard), color var(--duration-normal) var(--ease-standard);
+}
+
+:lang(ar) body,
+html[lang="ar"] body {
+  font-family: var(--font-arabic), var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color: transparent;
 }
 
 a {
@@ -50,44 +109,215 @@ a {
   text-decoration: none;
 }
 
+button {
+  font: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
 ::selection {
-  background: rgba(0, 43, 127, 0.16);
-  color: #0f172a;
+  background: rgb(201 162 39 / 0.28);
+  color: var(--color-foreground);
 }
 
-.dark ::selection {
-  background: rgba(59, 130, 246, 0.25);
-  color: #f1f5f9;
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
 }
 
-.panorama-grid {
-  background-image:
-    linear-gradient(rgba(0, 43, 127, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 43, 127, 0.08) 1px, transparent 1px);
-  background-size: 32px 32px;
+@layer components {
+  .site-shell {
+    background:
+      radial-gradient(circle at 13% 3%, rgb(59 12 163 / 0.07), transparent 25rem),
+      radial-gradient(circle at 92% 20%, rgb(165 13 70 / 0.06), transparent 28rem),
+      var(--color-background);
+  }
+
+  .dark .site-shell {
+    background:
+      radial-gradient(circle at 12% 0%, rgb(59 12 163 / 0.2), transparent 28rem),
+      radial-gradient(circle at 96% 22%, rgb(165 13 70 / 0.13), transparent 28rem),
+      var(--color-background);
+  }
+
+  .page-container {
+    width: min(100% - (var(--content-gutter) * 2), var(--container-wide));
+    margin-inline: auto;
+  }
+
+  .section-shell {
+    position: relative;
+    padding-block: clamp(4.5rem, 9vw, 8rem);
+  }
+
+  .section-shell--compact {
+    padding-block: clamp(3.5rem, 7vw, 5.5rem);
+  }
+
+  .surface-card {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-xs);
+  }
+
+  .surface-card--elevated {
+    box-shadow: var(--shadow-card);
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid color-mix(in srgb, var(--color-brand-gold) 45%, var(--color-border));
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-brand-gold) 10%, transparent);
+    padding: 0.44rem 0.8rem;
+    color: var(--color-brand-navy);
+    font-size: 0.78rem;
+    font-weight: 750;
+    line-height: 1;
+  }
+
+  .dark .eyebrow {
+    color: #f5dfa0;
+  }
+
+  .section-title {
+    margin: 1.1rem 0 0;
+    max-width: 15ch;
+    color: var(--color-foreground);
+    font-size: clamp(2rem, 4vw, 3.65rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+  }
+
+  [dir="rtl"] .section-title,
+  [dir="rtl"] .display-title {
+    letter-spacing: 0;
+  }
+
+  .section-description {
+    margin: 1.25rem 0 0;
+    max-width: 42rem;
+    color: var(--color-muted);
+    font-size: clamp(1rem, 1.35vw, 1.125rem);
+    line-height: 1.9;
+  }
+
+  .display-title {
+    margin: 1.35rem 0 0;
+    max-width: 14ch;
+    color: var(--color-foreground);
+    font-size: clamp(2.75rem, 6vw, 5.35rem);
+    font-weight: 850;
+    letter-spacing: -0.055em;
+    line-height: 1.06;
+  }
+
+  .button-base {
+    display: inline-flex;
+    min-height: 2.9rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 0.7rem 1.15rem;
+    font-size: 0.925rem;
+    font-weight: 750;
+    line-height: 1.25;
+    transition: transform var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+  }
+
+  .button-base:not([aria-disabled="true"]):hover {
+    transform: translateY(-2px);
+  }
+
+  .button-primary {
+    background: var(--color-brand-navy);
+    color: var(--color-on-brand);
+    box-shadow: 0 12px 24px -15px rgb(0 43 127 / 0.75);
+  }
+
+  .button-primary:hover {
+    background: #07398d;
+    box-shadow: 0 16px 28px -15px rgb(0 43 127 / 0.82);
+  }
+
+  .button-secondary {
+    border-color: var(--color-border);
+    background: color-mix(in srgb, var(--color-surface) 86%, transparent);
+    color: var(--color-foreground);
+  }
+
+  .button-secondary:hover {
+    border-color: color-mix(in srgb, var(--color-brand-gold) 74%, var(--color-border));
+    background: var(--color-surface-elevated);
+  }
+
+  .button-ghost {
+    color: var(--color-brand-navy);
+  }
+
+  .dark .button-ghost {
+    color: #e8e3ff;
+  }
+
+  .button-ghost:hover {
+    background: color-mix(in srgb, var(--color-brand-purple) 10%, transparent);
+  }
+
+  .control-button {
+    display: inline-grid;
+    width: 2.75rem;
+    min-height: 2.75rem;
+    place-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+    color: var(--color-foreground);
+    transition: transform var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+  }
+
+  .control-button:hover {
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--color-brand-gold) 62%, var(--color-border));
+    background: var(--color-surface-elevated);
+  }
+
+  .gold-thread {
+    color: var(--color-brand-gold);
+  }
+
+  .gold-thread-path {
+    stroke-dasharray: 8 14;
+    animation: panorama-thread 12s linear infinite;
+  }
 }
 
-.dark .panorama-grid {
-  background-image:
-    linear-gradient(rgba(59, 130, 246, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(59, 130, 246, 0.08) 1px, transparent 1px);
+@keyframes panorama-thread {
+  to {
+    stroke-dashoffset: -132;
+  }
 }
 
-.infinity-pattern {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.36;
-  background:
-    radial-gradient(ellipse at 34% 48%, rgba(59, 12, 163, 0.18) 0 12%, transparent 24%),
-    radial-gradient(ellipse at 66% 48%, rgba(165, 13, 70, 0.14) 0 12%, transparent 24%);
-  mask-image: linear-gradient(180deg, #000, transparent 78%);
+@keyframes panorama-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-.dark .infinity-pattern {
-  background:
-    radial-gradient(ellipse at 34% 48%, rgba(139, 92, 246, 0.15) 0 12%, transparent 24%),
-    radial-gradient(ellipse at 66% 48%, rgba(244, 63, 94, 0.12) 0 12%, transparent 24%);
+@keyframes panorama-splash-line {
+  from {
+    stroke-dashoffset: 360;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -96,8 +326,10 @@ a {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
   }
+
   html {
     scroll-behavior: auto;
   }

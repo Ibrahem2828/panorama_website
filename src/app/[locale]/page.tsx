@@ -1,24 +1,28 @@
 import { CTASection } from "@/components/sections/CTASection";
-import { DashboardSection } from "@/components/sections/DashboardSection";
-import { FeaturesSection } from "@/components/sections/FeaturesSection";
+import { FacultySection } from "@/components/sections/FacultySection";
 import { HeroSection } from "@/components/sections/HeroSection";
-import { IdentitySection } from "@/components/sections/IdentitySection";
-import { MobileAppSection } from "@/components/sections/MobileAppSection";
-import { ProblemSection } from "@/components/sections/ProblemSection";
-import { SecuritySection } from "@/components/sections/SecuritySection";
-import { SolutionSection } from "@/components/sections/SolutionSection";
+import { ImpactSection } from "@/components/sections/ImpactSection";
+import { InitiativesPreviewSection } from "@/components/sections/InitiativesPreviewSection";
+import { PlatformSection } from "@/components/sections/PlatformSection";
+import { ServicesSection } from "@/components/sections/ServicesSection";
+import { StorySection } from "@/components/sections/StorySection";
+import { VisionSection } from "@/components/sections/VisionSection";
+import { VolunteerPreviewSection } from "@/components/sections/VolunteerPreviewSection";
+import { FollowPanorama } from "@/components/social/FollowPanorama";
 
 export default function Home() {
   return (
     <main id="main-content">
       <HeroSection />
-      <ProblemSection />
-      <SolutionSection />
-      <FeaturesSection />
-      <MobileAppSection />
-      <DashboardSection />
-      <SecuritySection />
-      <IdentitySection />
+      <StorySection />
+      <FacultySection />
+      <ServicesSection />
+      <InitiativesPreviewSection />
+      <VolunteerPreviewSection />
+      <ImpactSection />
+      <PlatformSection />
+      <VisionSection />
+      <FollowPanorama />
       <CTASection />
     </main>
   );
