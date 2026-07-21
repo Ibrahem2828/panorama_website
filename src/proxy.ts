@@ -4,6 +4,16 @@ import { faculties } from "@/data/faculties";
 import { routing } from "./i18n/routing";
 
 const intlMiddleware = createMiddleware(routing);
+const securityHeaders = {
+  "Content-Security-Policy": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'",
+  "Cross-Origin-Opener-Policy": "same-origin",
+  "Cross-Origin-Resource-Policy": "same-origin",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=()",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "DENY",
+  "X-DNS-Prefetch-Control": "off",
+};
 const publishedFacultySlugs = new Set(
   faculties
     .filter((faculty) => faculty.enabled && faculty.detailPageEnabled)
@@ -48,8 +58,8 @@ export default function proxy(request: NextRequest) {
     return new NextResponse(facultyNotFoundDocument(locale), {
       status: 404,
       headers: {
+        ...securityHeaders,
         "Content-Type": "text/html; charset=utf-8",
-        "X-Content-Type-Options": "nosniff",
         "X-Robots-Tag": "noindex",
       },
     });

@@ -1,0 +1,14 @@
+# Coolify/Nixpacks build contract for the Next.js standalone server.
+[variables]
+HOSTNAME = "0.0.0.0"
+NEXT_TELEMETRY_DISABLED = "1"
+NIXPACKS_NODE_VERSION = "22"
+
+[phases.install]
+cmds = ["npm ci"]
+
+[phases.build]
+cmds = ["npm run type-check", "npm run lint", "npm run test", "npm run build"]
+
+[start]
+cmd = "HOSTNAME=0.0.0.0 PORT=${PORT:-3000} npm run start"

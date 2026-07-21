@@ -75,6 +75,33 @@ test("Arabic remains the deterministic default locale while English is explicitl
   assert.match(routing, /localeDetection: false/);
 });
 
+test("production deployment contract preserves standalone output and Coolify reproducibility", () => {
+  const packageJson = JSON.parse(source("package.json"));
+  const nextConfig = source("next.config.ts");
+  const nixpacks = source("nixpacks.toml");
+  const dockerfile = source("Dockerfile");
+  const workflow = source(".github/workflows/ci.yml");
+
+  assert.equal(packageJson.scripts.start, "node .next/standalone/server.js");
+  assert.equal(packageJson.scripts.prestart, "node scripts/prepare-standalone.mjs");
+  assert.equal(packageJson.scripts.typegen, "next typegen");
+  assert.match(packageJson.scripts["type-check"], /npm run typegen/);
+  assert.equal(packageJson.packageManager, "npm@11.16.0");
+  assert.match(nextConfig, /output: "standalone"/);
+  assert.match(nextConfig, /Content-Security-Policy/);
+  assert.match(nixpacks, /NIXPACKS_NODE_VERSION = "22"/);
+  assert.match(nixpacks, /cmds = \["npm ci"\]/);
+  for (const command of ["npm run type-check", "npm run lint", "npm run test", "npm run build"]) {
+    assert.match(nixpacks, new RegExp(command.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")));
+  }
+  assert.match(nixpacks, /HOSTNAME=0\.0\.0\.0 PORT=\$\{PORT:-3000\} npm run start/);
+  assert.match(dockerfile, /\.next\/static \.\/\.next\/static/);
+  assert.match(workflow, /node-version: 22/);
+  for (const command of ["npm ci", "npm run type-check", "npm run lint", "npm run test", "npm run build"]) {
+    assert.match(workflow, new RegExp(command.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")));
+  }
+});
+
 test("content source contains no placeholder prose", () => {
   const contentFiles = listFiles(join(root, "src", "content"));
   const joined = contentFiles.map((file) => readFileSync(file, "utf8")).join("\n");

@@ -1,42 +1,72 @@
-# Panorama Website
+# Panorama website
 
-Public bilingual website for Panorama, a student volunteer community that began at the Syrian Private University. Arabic is the default locale; English is served under `/en`.
+Panorama is a bilingual public website for a student volunteer community at the Syrian Private University. Arabic is the deterministic default at `/`; English is served under `/en`.
 
-## Implemented information architecture
+The completed Phase 1 and Phase 2 information architecture, visual identity, motion system, themes, faculty pages, static contact surfaces, feature flags, and localized content are intentionally preserved.
 
-- Home, About, Faculties, individual faculty pages, Services, Initiatives, Volunteer, Platform, Impact, News, Gallery, FAQ, Contact, Privacy, and Terms.
-- Each listed content route has Arabic and English variants through `next-intl` routing.
-- News and Gallery are intentionally empty publishing foundations until approved material is supplied.
-- Contact and volunteer forms are visible static interfaces only; they do not submit data or display a false success state.
+## Runtime contract
 
-## Single source of public configuration
+- Next.js `16.2.10` with `output: "standalone"`.
+- Local Node contract: `>=20.19.0 <23`; `.nvmrc` pins the verified local Node `20.19.6`.
+- GitHub CI, Docker, and Coolify/Nixpacks run Node 22.
+- npm lockfile is authoritative. Use `npm ci`; do not replace it with an unpinned install in CI or deployment.
+- The production server is `node .next/standalone/server.js`, started through `npm run start`. Do not use `next start` while standalone output is enabled.
 
-`src/config/site.ts` owns the public identity, canonical domain, logo paths, contact values, social channels, faculty contact overrides, default Open Graph image, and feature flags. Do not place public contact or social URLs directly in page components.
+## Install, verify, and run
 
-Copy `.env.example` to `.env` only when configuring a deployment. All values are public build-time values, not secrets. Unknown values must remain empty so they stay hidden.
-
-## Project structure
-
-```text
-src/app                 Localized routes, metadata, sitemap, robots, global CSS
-src/config/site.ts      Single public configuration source
-src/content             Typed Arabic/English content modules and publication states
-src/components          Shared UI, layout, motion, forms, social, and route sections
-src/data/faculties.ts   Faculty data consumed by the reusable faculty-page template
-src/messages            Localized shell and legal-interface messages
-public/Logos            Supplied official master and faculty-logo assets
-docs                    Design, configuration, content, and phase handoff documents
+```bash
+npm ci
+npm run type-check
+npm run lint
+npm run test
+npm run build
 ```
+
+PowerShell:
+
+```powershell
+$env:HOSTNAME = "0.0.0.0"
+$env:PORT = "3000"
+npm run start
+```
+
+POSIX shell:
+
+```bash
+HOSTNAME=0.0.0.0 PORT=3000 npm run start
+```
+
+`prestart` copies `public` and `.next/static` into the standalone directory before the server starts. This is required when running the standalone output directly outside the Docker image.
+
+`npm run type-check` first runs `next typegen`, so a clean checkout does not need a prior Next build or dev-server run. Generated `next-env.d.ts` and `.next` files are intentionally ignored.
+
+## Public configuration
+
+Copy `.env.example` to `.env` only for local or deployment configuration. Every `NEXT_PUBLIC_*` value is public and becomes part of the built website; never put credentials, API keys, or private contact data in these variables.
+
+- Official identity domain: `https://بانوراما.tech`
+- Technical DNS/TLS/Coolify hostname: `https://xn--mgbaab0cxheq.tech`
+- `src/config/site.ts` is the sole source for public identity, contact, social links, feature flags, assets, canonical URL, and metadata inputs.
+
+Unknown optional contact and social values must remain empty. The UI hides unconfigured channels rather than fabricating destinations.
+
+## Repository quality gates
+
+GitHub Actions runs `npm ci`, type checking, linting, tests, and the production build on pushes and pull requests to `main`. Dependabot opens weekly npm update pull requests for review.
+
+Before a release, run the same commands locally and review the release checklist. Do not commit `node_modules`, `.next`, logs, `.env` files, screenshots, or generated TypeScript build-info files.
+
+## Deployment
+
+Coolify/Nixpacks is the primary hosted deployment path. See [the GitHub and Coolify guide](docs/GITHUB_AND_COOLIFY_DEPLOYMENT.md) for the exact Coolify settings, environment scopes, Punycode domain, verification, rollback, and security checklist.
+
+The Dockerfile and Compose files remain a supported alternative for a private Linux deployment. See [the production runbook](docs/PRODUCTION_DEPLOYMENT_RUNBOOK.md).
 
 ## Documentation
 
-- `docs/SITE_CONFIGURATION.md`
-- `docs/SOCIAL_AND_CONTACT_CONFIGURATION.md`
-- `docs/SITE_CONTENT_ARCHITECTURE.md`
-- `docs/FACULTY_PAGE_SYSTEM.md`
-- `docs/CONTENT_TRUTH_AND_APPROVAL_GUIDE.md`
-- `docs/FEATURE_FLAGS.md`
-- `docs/PHASE_2_CLOSURE_REPORT.md`
-- `docs/PHASE_3_RUNTIME_VERIFICATION_PLAN.md`
-
-Runtime commands were intentionally not run as part of the static Phase 2 implementation. See the closure report and Phase 3 plan before public release.
+- [Repository readiness report](docs/REPOSITORY_READINESS.md)
+- [Phase 3 closure report](docs/PHASE_3_CLOSURE_REPORT.md)
+- [Runtime verification](docs/RUNTIME_VERIFICATION_REPORT.md)
+- [Final release checklist](docs/FINAL_RELEASE_CHECKLIST.md)
+- [Content owner checklist](docs/CONTENT_OWNER_APPROVAL_CHECKLIST.md)
+- [Known limitations](docs/KNOWN_LIMITATIONS.md)
