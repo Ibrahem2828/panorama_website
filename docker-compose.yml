@@ -1,23 +1,19 @@
 services:
   panorama-website:
-    container_name: panorama-website
     build:
       context: .
       args:
-        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://بانوراما.tech}
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://xn--mgbaab0cxheq.tech}
         NEXT_PUBLIC_CONTACT_EMAIL: ${NEXT_PUBLIC_CONTACT_EMAIL:-panoramacompany31@gmail.com}
     restart: unless-stopped
+    init: true
     environment:
       NODE_ENV: production
-      PORT: 3000
       HOSTNAME: 0.0.0.0
-      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-https://بانوراما.tech}
-      NEXT_PUBLIC_CONTACT_EMAIL: ${NEXT_PUBLIC_CONTACT_EMAIL:-panoramacompany31@gmail.com}
+      PORT: 3000
     ports:
       - "127.0.0.1:3000:3000"
-    healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3000/ >/dev/null 2>&1 || exit 1"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 20s
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL

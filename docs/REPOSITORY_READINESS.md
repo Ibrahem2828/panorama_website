@@ -1,7 +1,7 @@
 # Repository readiness report
 
 **Prepared:** 2026-07-21  
-**Scope:** GitHub upload, reproducible npm install, standalone production output, and Coolify/Nixpacks deployment preparation.
+**Scope:** GitHub upload, reproducible npm install, standalone production output, and Coolify/Dockerfile deployment preparation.
 
 ## Source-control hygiene
 
@@ -16,13 +16,14 @@
 - `npm run type-check` invokes `next typegen` before TypeScript, so generated Next route types are available in a clean checkout; `next-env.d.ts` is generated and ignored rather than tracked.
 - Next.js standalone output remains enabled; the start command remains `node .next/standalone/server.js`.
 - `scripts/prepare-standalone.mjs` supplies public and static assets to a direct standalone run.
-- Nixpacks explicitly uses Node 22 for Coolify while the package supports the verified local Node 20.19.6 through Node 22.
+- The Dockerfile pins Node `22.23.1-bookworm-slim` for Coolify while the package supports the verified local Node 20.19.6 through Node 22.
+- The Docker image is multi-stage, contains only standalone runtime artifacts, runs as an unprivileged user, and includes an HTTP health check.
 
 ## Verification performed on 2026-07-21
 
 | Check | Result |
 | --- | --- |
-| `npm ci` | Passed from the committed lockfile (413 packages) |
+| `npm ci` | Passed from the committed lockfile (415 packages) |
 | `npm run type-check` | Passed; `next typegen` generated route types first |
 | `npm run lint` | Passed |
 | `npm run test` | Passed, 8/8 tests |
@@ -44,5 +45,5 @@
 ## Deliberate exclusions
 
 - No GitHub push, Coolify application creation, DNS edit, TLS certificate issuance, or environment-variable write was performed because those require owner credentials and external authority.
-- Docker was not rebuilt in this workspace because Docker Desktop's Linux daemon is unavailable. Dockerfile structure was inspected; Coolify/Nixpacks is the requested primary deployment path.
+- Docker image build could not be executed in this workspace because Docker Desktop's Linux daemon is unavailable. The Dockerfile is contract-tested; Coolify/Dockerfile is the primary deployment path and must perform the authoritative image build after the Coolify build-pack setting is changed.
 - Legal/content approvals remain governed by the existing owner checklist.

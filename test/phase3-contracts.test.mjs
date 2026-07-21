@@ -75,10 +75,9 @@ test("Arabic remains the deterministic default locale while English is explicitl
   assert.match(routing, /localeDetection: false/);
 });
 
-test("production deployment contract preserves standalone output and Coolify reproducibility", () => {
+test("production deployment contract preserves standalone output and Dockerfile reproducibility", () => {
   const packageJson = JSON.parse(source("package.json"));
   const nextConfig = source("next.config.ts");
-  const nixpacks = source("nixpacks.toml");
   const dockerfile = source("Dockerfile");
   const workflow = source(".github/workflows/ci.yml");
 
@@ -89,12 +88,16 @@ test("production deployment contract preserves standalone output and Coolify rep
   assert.equal(packageJson.packageManager, "npm@11.16.0");
   assert.match(nextConfig, /output: "standalone"/);
   assert.match(nextConfig, /Content-Security-Policy/);
-  assert.match(nixpacks, /NIXPACKS_NODE_VERSION = "22"/);
-  assert.match(nixpacks, /cmds = \["npm ci"\]/);
+  assert.equal(existsSync(join(root, "nixpacks.toml")), false);
+  assert.match(dockerfile, /node:22\.23\.1-bookworm-slim/);
+  assert.match(dockerfile, /npm ci --no-audit --no-fund/);
   for (const command of ["npm run type-check", "npm run lint", "npm run test", "npm run build"]) {
-    assert.match(nixpacks, new RegExp(command.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")));
+    assert.match(dockerfile, new RegExp(command.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")));
   }
-  assert.match(nixpacks, /HOSTNAME=0\.0\.0\.0 PORT=\$\{PORT:-3000\} npm run start/);
+  assert.match(dockerfile, /HOSTNAME=0\.0\.0\.0/);
+  assert.match(dockerfile, /USER nextjs/);
+  assert.match(dockerfile, /HEALTHCHECK/);
+  assert.match(dockerfile, /xn--mgbaab0cxheq\.tech/);
   assert.match(dockerfile, /\.next\/static \.\/\.next\/static/);
   assert.match(workflow, /node-version: 22/);
   for (const command of ["npm ci", "npm run type-check", "npm run lint", "npm run test", "npm run build"]) {

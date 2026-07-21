@@ -32,12 +32,14 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
+    "@swc/helpers": "^0.5.23",
     "@types/node": "^22.15.29",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.28.0",
     "eslint-config-next": "^16.2.10",
+    "picomatch": "^4.0.5",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3"

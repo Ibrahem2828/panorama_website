@@ -12,7 +12,7 @@
 - [x] العربية افتراضية والإنجليزية `/en` ومبدّل اللغة مختبر.
 - [x] Sitemap، robots، canonical، alternates وJSON-LD مختبرة.
 - [x] رؤوس CSP و`nosniff`, `DENY`, Referrer-Policy وPermissions-Policy وCOOP/CORP مختبرة.
-- [x] إعداد Nixpacks وGitHub CI وDependabot موثق ومغطى باختبار عقد.
+- [x] إعداد Dockerfile وGitHub CI وDependabot موثق ومغطى باختبار عقد.
 - [x] قائمة الهاتف وFAQ والنماذج الثابتة اختبرت في Chrome.
 
 ## غير مكتمل خارجياً — لا تضع علامة مكتمل قبل الدليل

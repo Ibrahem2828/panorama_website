@@ -1,44 +1,60 @@
-FROM node:22-alpine AS deps
+# syntax=docker/dockerfile:1.7
+# Production image for the Panorama Next.js standalone server.
+# Node is pinned to a patch release so CI, local Docker, and Coolify build
+# against the same runtime. Update it deliberately as part of maintenance.
+ARG NODE_IMAGE=node:22.23.1-bookworm-slim
 
+FROM ${NODE_IMAGE} AS base
 WORKDIR /app
-RUN apk add --no-cache libc6-compat
 
+ENV NEXT_TELEMETRY_DISABLED=1
+
+FROM base AS dependencies
+
+# Copy dependency manifests first to keep this layer cacheable between source changes.
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --no-audit --no-fund
 
-FROM node:22-alpine AS builder
+FROM base AS build
 
-WORKDIR /app
-RUN apk add --no-cache libc6-compat
-
-ENV NEXT_TELEMETRY_DISABLED=1
-ARG NEXT_PUBLIC_SITE_URL=https://بانوراما.tech
+# These are public, build-time values. Never pass credentials or private keys
+# through ARG/ENV: configure sensitive runtime variables in Coolify instead.
+ARG NEXT_PUBLIC_SITE_URL=https://xn--mgbaab0cxheq.tech
 ARG NEXT_PUBLIC_CONTACT_EMAIL=panoramacompany31@gmail.com
-ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
-ENV NEXT_PUBLIC_CONTACT_EMAIL=$NEXT_PUBLIC_CONTACT_EMAIL
+ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL} \
+    NEXT_PUBLIC_CONTACT_EMAIL=${NEXT_PUBLIC_CONTACT_EMAIL}
 
-COPY --from=deps /app/node_modules ./node_modules
+COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
-RUN npm run build
 
-FROM node:22-alpine AS runner
+# A Docker image is only produced when the exact release gates pass.
+RUN npm run type-check \
+    && npm run lint \
+    && npm run test \
+    && npm run build
 
+FROM ${NODE_IMAGE} AS runtime
 WORKDIR /app
 
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV PORT=3000
-ENV HOSTNAME=0.0.0.0
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    HOSTNAME=0.0.0.0 \
+    PORT=3000
 
-RUN addgroup --system --gid 1001 nodejs \
-  && adduser --system --uid 1001 nextjs
+RUN groupadd --system --gid 1001 nodejs \
+    && useradd --system --uid 1001 --gid nodejs --create-home nextjs
 
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+# Standalone output intentionally contains only production runtime files.
+COPY --from=build --chown=nextjs:nodejs /app/public ./public
+COPY --from=build --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=build --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 
 EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+  CMD node -e "const http=require('node:http');const request=http.get('http://127.0.0.1:'+process.env.PORT+'/',(response)=>process.exit(response.statusCode>=200&&response.statusCode<400?0:1));request.setTimeout(3000,()=>{request.destroy();process.exit(1)});request.on('error',()=>process.exit(1));"
 
 CMD ["node", "server.js"]

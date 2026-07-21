@@ -8,7 +8,7 @@ The completed Phase 1 and Phase 2 information architecture, visual identity, mot
 
 - Next.js `16.2.10` with `output: "standalone"`.
 - Local Node contract: `>=20.19.0 <23`; `.nvmrc` pins the verified local Node `20.19.6`.
-- GitHub CI, Docker, and Coolify/Nixpacks run Node 22.
+- GitHub CI, Docker, and Coolify run Node 22.
 - npm lockfile is authoritative. Use `npm ci`; do not replace it with an unpinned install in CI or deployment.
 - The production server is `node .next/standalone/server.js`, started through `npm run start`. Do not use `next start` while standalone output is enabled.
 
@@ -58,9 +58,9 @@ Before a release, run the same commands locally and review the release checklist
 
 ## Deployment
 
-Coolify/Nixpacks is the primary hosted deployment path. See [the GitHub and Coolify guide](docs/GITHUB_AND_COOLIFY_DEPLOYMENT.md) for the exact Coolify settings, environment scopes, Punycode domain, verification, rollback, and security checklist.
+Coolify/Dockerfile is the primary hosted deployment path. See [the GitHub and Coolify guide](docs/GITHUB_AND_COOLIFY_DEPLOYMENT.md) for the exact Coolify settings, environment scopes, Punycode domain, verification, rollback, and security checklist.
 
-The Dockerfile and Compose files remain a supported alternative for a private Linux deployment. See [the production runbook](docs/PRODUCTION_DEPLOYMENT_RUNBOOK.md).
+The Dockerfile and Compose files support local and private Linux deployments as well. See [the production runbook](docs/PRODUCTION_DEPLOYMENT_RUNBOOK.md).
 
 ## Documentation
 
