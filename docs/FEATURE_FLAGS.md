@@ -8,8 +8,8 @@ Feature flags live in `src/config/site.ts` as `site.featureFlags`. They protect 
 | --- | ---: | --- |
 | `showNews` | `false` | News remains an empty approved-content foundation |
 | `showGallery` | `false` | Gallery remains an empty approved-asset foundation |
-| `showVolunteerForm` | `true` | Shows a disabled static form with no submission behavior |
-| `showContactForm` | `true` | Shows a disabled static form with no submission behavior |
+| `showVolunteerForm` | `false` | Keeps the volunteer form hidden until a reviewed submission flow exists |
+| `showContactForm` | `false` | Keeps the contact form hidden until a reviewed submission flow exists |
 | `showPlatformDownload` | `false` | No download or registration link is displayed |
 | `showWhatsApp` | `false` | WhatsApp is hidden unless the URL and approval are present |
 | `showMap` | `false` | No map embed or map CTA is displayed |

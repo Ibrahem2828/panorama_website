@@ -10,7 +10,7 @@
 | --- | --- |
 | Public name | `Panorama` / `بانوراما` |
 | Slogan | `فيد واستفيد` / “Share value. Gain value.” |
-| Canonical domain | `https://بانوراما.tech`, overridable by `NEXT_PUBLIC_SITE_URL` |
+| Canonical domain | `https://xn--mgbaab0cxheq.tech`, fixed in code |
 | Default logo and Open Graph image | `/Logos/اساسي.png` |
 | Master statement | Configured in `site.statement` for Arabic and English |
 | Faculty identity | `src/data/faculties.ts` and supplied faculty logos |
@@ -23,7 +23,7 @@ The following values may be supplied at build time through public `NEXT_PUBLIC_*
 
 | Variable | Role |
 | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | Canonical site domain |
+| `NEXT_PUBLIC_SITE_URL` | Deployment reference only; canonical metadata is fixed to the approved Punycode origin |
 | `NEXT_PUBLIC_CONTACT_EMAIL` | General contact email |
 | `NEXT_PUBLIC_PARTNERSHIPS_EMAIL` | Partnership email |
 | `NEXT_PUBLIC_VOLUNTEER_EMAIL` | Volunteer email |
@@ -38,6 +38,6 @@ The general email is a pre-existing project value, not an independently verified
 ## Editorial rules
 
 - Keep unknown facts as `undefined`; do not use placeholders such as `TBD`, invented phone numbers, or empty cards.
-- Update canonical/social/contact values in this configuration module, then validate every consuming route in Phase 3.
+- Treat the canonical origin as a controlled release value. Do not override it with an environment variable; change it only with a documented migration and complete SEO validation.
 - Keep secrets out of `NEXT_PUBLIC_*` variables and out of the repository.
 - A faculty-specific contact override belongs in `site.facultyContactOverrides` only after its owner approves the value.

@@ -5,9 +5,7 @@
 | Master Panorama logo | `public/Logos/اساسي.png` | Header, hero, splash, footer, metadata | Official supplied PNG; rendered without recolour or crop |
 | Master source PDF | `public/Logos/Logo.pdf` | Preserved source | Not embedded in an image element; browser implementation uses supplied PNG |
 | Informatics logo | `public/Logos/معلوماتية.png` | Faculty card | `object-contain` |
-| Foundation Requirements logo | `public/Logos/متطلب اساسي.png` | Faculty card | `object-contain` |
 | Petroleum logo | `public/Logos/بتروول.png` | Faculty card | Filename preserved as supplied |
-| Clinical logo | `public/Logos/سريرية.png` | Faculty card | `object-contain` |
 | Pharmacy logo | `public/Logos/صيدلي.png` | Faculty card | `object-contain` |
 | Medicine logo | `public/Logos/طب بشري.png` | Faculty card | `object-contain` |
 | Dentistry logo | `public/Logos/طب اسنان.png` | Faculty card | `object-contain` |

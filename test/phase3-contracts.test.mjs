@@ -21,7 +21,7 @@ function listFiles(directory) {
 
 test("central public configuration keeps approved values and hides unknown socials", () => {
   const config = source("src/config/site.ts");
-  assert.match(config, /https:\/\/بانوراما\.tech/);
+  assert.match(config, /https:\/\/xn--mgbaab0cxheq\.tech/);
   assert.match(config, /https:\/\/www\.instagram\.com\/company\.panorama\?utm_source=qr&igsh=ZTZ1Z21wNG54ZWVx/);
   assert.match(config, /https:\/\/www\.facebook\.com\/share\/1CvmsKTNKV\//);
   assert.match(config, /link\.enabled && typeof link\.url === "string" && link\.url\.length > 0/);
@@ -33,8 +33,10 @@ test("enabled faculty data has unique slugs, localized names, and existing logo 
   const faculties = source("src/data/faculties.ts");
   const slugs = [...faculties.matchAll(/slug: "([a-z-]+)"/g)].map((match) => match[1]);
   const logoPaths = [...faculties.matchAll(/logoPath: "([^"]+)"/g)].map((match) => match[1]);
-  assert.equal(slugs.length, 8);
+  assert.equal(slugs.length, 6);
   assert.equal(new Set(slugs).size, slugs.length);
+  assert.ok(!slugs.includes("foundation-requirements"));
+  assert.ok(!slugs.includes("clinical"));
   assert.equal(logoPaths.length, slugs.length);
   assert.equal((faculties.match(/name: \{ ar:/g) ?? []).length, slugs.length);
   for (const logoPath of logoPaths) {
@@ -53,16 +55,17 @@ test("declared public routes, page loader, errors, and 404 boundaries exist", ()
   assert.match(source("src/app/[locale]/faculties/[slug]/page.tsx"), /if \(!faculty\) notFound\(\)/);
 });
 
-test("navigation uses declared internal destinations and static forms remain honestly disabled", () => {
+test("navigation uses declared internal destinations and unpublished forms remain hidden", () => {
   const navigation = source("src/data/navigation.ts");
+  const config = source("src/config/site.ts");
   const destinations = [...navigation.matchAll(/href: "([^"]+)"/g)].map((match) => match[1]);
   assert.ok(destinations.length > 0);
   assert.ok(destinations.every((href) => href.startsWith("/") && href !== "#"));
-  for (const form of ["src/components/forms/StaticContactForm.tsx", "src/components/forms/StaticVolunteerForm.tsx"]) {
-    const code = source(form);
-    assert.match(code, /disabled type="button"/);
-    assert.doesNotMatch(code, /onSubmit=/);
-  }
+  assert.doesNotMatch(navigation, /initiatives/);
+  assert.match(config, /showVolunteerForm: false/);
+  assert.match(config, /showContactForm: false/);
+  assert.doesNotMatch(source("src/app/[locale]/contact/page.tsx"), /StaticContactForm/);
+  assert.doesNotMatch(source("src/app/[locale]/volunteer/page.tsx"), /StaticVolunteerForm/);
 });
 
 test("localized message catalogs parse and retain required shell namespaces", () => {

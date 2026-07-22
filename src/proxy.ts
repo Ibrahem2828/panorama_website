@@ -1,11 +1,12 @@
 import createMiddleware from "next-intl/middleware";
 import { NextRequest, NextResponse } from "next/server";
+import { CANONICAL_HOST } from "@/config/site";
 import { faculties } from "@/data/faculties";
 import { routing } from "./i18n/routing";
 
 const intlMiddleware = createMiddleware(routing);
 const securityHeaders = {
-  "Content-Security-Policy": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'",
+  "Content-Security-Policy": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; upgrade-insecure-requests",
   "Cross-Origin-Opener-Policy": "same-origin",
   "Cross-Origin-Resource-Policy": "same-origin",
   "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=()",
@@ -19,6 +20,20 @@ const publishedFacultySlugs = new Set(
     .filter((faculty) => faculty.enabled && faculty.detailPageEnabled)
     .map((faculty) => faculty.slug),
 );
+
+function forwardedValue(value: string | null) {
+  return value?.split(",")[0]?.trim().toLowerCase();
+}
+
+function publicRequestHost(request: NextRequest) {
+  const forwardedHost = forwardedValue(request.headers.get("x-forwarded-host"));
+  const host = forwardedHost || forwardedValue(request.headers.get("host")) || "";
+  return host.replace(/:\d+$/, "");
+}
+
+function publicRequestProtocol(request: NextRequest) {
+  return forwardedValue(request.headers.get("x-forwarded-proto")) || request.nextUrl.protocol.replace(":", "");
+}
 
 function facultyNotFoundDocument(locale: "ar" | "en") {
   const isArabic = locale === "ar";
@@ -48,6 +63,17 @@ function facultyNotFoundDocument(locale: "ar" | "en") {
 }
 
 export default function proxy(request: NextRequest) {
+  const host = publicRequestHost(request);
+  const protocol = publicRequestProtocol(request);
+
+  if (host === "www." + CANONICAL_HOST || (host === CANONICAL_HOST && protocol === "http")) {
+    const destination = request.nextUrl.clone();
+    destination.protocol = "https:";
+    destination.host = CANONICAL_HOST;
+    destination.port = "";
+    return NextResponse.redirect(destination, 308);
+  }
+
   const segments = request.nextUrl.pathname.split("/").filter(Boolean);
   const locale = segments[0] === "en" ? "en" : "ar";
   const facultyIndex = locale === "en" ? 1 : 0;

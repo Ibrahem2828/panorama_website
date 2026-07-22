@@ -46,9 +46,10 @@ Only publish owner-approved contact and social values. Leave unknown optional va
 ## 4. Domain and TLS
 
 1. Add `https://xn--mgbaab0cxheq.tech` as the technical domain in Coolify. Use this ASCII/Punycode hostname for DNS, TLS, and reverse-proxy configuration.
-2. Point the official Arabic identity domain to the Coolify server using the DNS provider's IDN/Punycode controls.
-3. Enable Coolify-managed TLS and Force HTTPS only after DNS resolves to the server.
-4. Do not add HSTS manually until HTTPS is proven stable. Coolify's proxy owns the public TLS boundary.
+2. Point the official Arabic identity domain to the Coolify server using the DNS provider's IDN/Punycode controls. Do not use an IP address as a public URL.
+3. If the www hostname is published, add `https://www.xn--mgbaab0cxheq.tech` to the same Coolify resource and make sure its DNS and TLS certificate are valid. The application returns a permanent redirect to the non-www canonical origin.
+4. Enable Coolify-managed TLS and Force HTTPS after DNS resolves to the server. Verify both HTTP-to-HTTPS and www-to-non-www redirects from an external network.
+5. Do not add HSTS until the certificate and both redirect paths are proven stable. Start with `max-age=31536000` on the HTTPS canonical host only; do not use `includeSubDomains` or `preload` without an explicit hostname audit. Coolify's proxy owns the public TLS boundary.
 
 ## 5. Deploy and verify
 

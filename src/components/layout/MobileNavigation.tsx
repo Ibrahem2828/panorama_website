@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import type { NavItem } from "@/data/navigation";
 import { Button } from "@/components/ui/Button";
+import { SocialLinks } from "@/components/social/SocialLinks";
 
 type MobileNavigationProps = {
   isOpen: boolean;
@@ -57,10 +58,18 @@ export function MobileNavigation({ isOpen, items, onClose }: MobileNavigationPro
   if (!isOpen) return null;
 
   return (
-    <aside
+    <>
+      <button
+        aria-label={t("closeMenu")}
+        className="fixed inset-0 z-[59] cursor-default bg-[rgb(7_18_47/0.45)] backdrop-blur-[2px] lg:hidden"
+        onClick={onClose}
+        tabIndex={-1}
+        type="button"
+      />
+      <aside
       aria-label={t("mobileMenu")}
       aria-modal="true"
-      className="fixed inset-x-0 bottom-0 top-[5.3rem] z-50 overflow-y-auto border-t border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-background)_97%,transparent)] px-5 pb-8 pt-5 backdrop-blur-xl lg:hidden"
+      className="fixed inset-x-0 bottom-0 top-[4.5rem] z-[60] max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-background)_98%,transparent)] px-4 pb-8 pt-5 shadow-[var(--shadow-raised)] backdrop-blur-xl motion-safe:animate-[panorama-drawer-in_220ms_var(--ease-entrance)_both] lg:hidden"
       id="mobile-navigation"
       ref={menuRef}
       role="dialog"
@@ -80,7 +89,11 @@ export function MobileNavigation({ isOpen, items, onClose }: MobileNavigationPro
         <Button className="mt-4 w-full" href="/volunteer" onClick={onClose}>
           {t("join")}
         </Button>
+        <div className="mt-5 border-t border-[var(--color-border)] pt-5">
+          <SocialLinks />
+        </div>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 }

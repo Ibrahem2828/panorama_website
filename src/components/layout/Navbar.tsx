@@ -18,9 +18,9 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-background)_87%,transparent)] backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-background)_92%,transparent)] backdrop-blur-xl">
       <Container>
-        <nav aria-label={t("primaryNavigation")} className="flex min-h-[5.3rem] items-center justify-between gap-3">
+        <nav aria-label={t("primaryNavigation")} className="flex min-h-[4.5rem] items-center justify-between gap-3">
           <Link aria-label={t("homeAria")} className="shrink-0" href="/#top" onClick={() => setMenuOpen(false)}>
             <BrandLogo compact priority />
           </Link>
@@ -41,7 +41,7 @@ export function Navbar() {
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
             <ThemeToggle />
-            <Button className="hidden lg:inline-flex" href="/volunteer">
+            <Button className="hidden xl:inline-flex" href="/volunteer">
               {t("join")}
             </Button>
             <button aria-controls="mobile-navigation" aria-expanded={menuOpen} aria-label={menuOpen ? t("closeMenu") : t("openMenu")} className="control-button xl:hidden" onClick={() => setMenuOpen(true)} type="button">

@@ -16,8 +16,8 @@ export function Footer() {
   return (
     <footer className="relative overflow-hidden bg-[var(--color-footer)] text-white">
       <GoldThread className="absolute inset-x-0 top-3 opacity-70" />
-      <Container className="relative py-14 sm:py-16">
-        <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr_0.72fr]">
+      <Container className="relative py-12 sm:py-16">
+        <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr_0.72fr]">
           <div>
             <BrandLogo />
             <p className="mt-6 max-w-md text-sm leading-7 text-white/72">{t("description")}</p>
@@ -25,7 +25,7 @@ export function Footer() {
           </div>
           <div>
             <h2 className="text-sm font-extrabold text-white">{t("explore")}</h2>
-            <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3">
+            <ul className="mt-5 grid gap-y-3 sm:grid-cols-2 sm:gap-x-4">
               {footerLinks.map((item) => <li key={item.key}><Link className="text-sm font-semibold text-white/65 transition hover:text-white focus-visible:rounded" href={item.href}>{t(`links.${item.key}`)}</Link></li>)}
             </ul>
           </div>

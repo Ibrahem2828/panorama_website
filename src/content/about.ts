@@ -13,7 +13,7 @@ type AboutContent = {
   vision: { title: string; description: string };
   values: ValueItem[];
   currentScope: { title: string; items: string[] };
-  timeline: { title: string; description: string; note: string };
+  howWeWork: { title: string; description: string; note: string };
   cta: { exploreFaculties: string; volunteer: string };
 };
 
@@ -35,7 +35,7 @@ export const aboutContent = {
       { id: "belonging", title: "الانتماء الطلابي", description: "نجمع الكليات تحت هوية واحدة تحترم خصوصية كل مجتمع." }
     ],
     currentScope: { title: "نطاقنا اليوم", items: ["مجتمعات طلابية متعددة الكليات في الجامعة السورية الخاصة.", "تبادل المعرفة والخدمات والمساندة الطلابية.", "تطوع ومبادرات تعزز الانتماء والتعاون.", "أدوات رقمية تدعم العمل المجتمعي عندما تكون متاحة ومعتمدة."] },
-    timeline: { title: "محطات الرحلة", description: "ستُضاف المحطات والتواريخ بعد مراجعة واعتماد السجل الرسمي للفريق.", note: "لا نعرض تواريخ أو إنجازات غير موثقة." },
+    howWeWork: { title: "كيف نعمل", description: "نبدأ من احتياج طلابي واضح، ثم نشارك المعرفة وننظّم الخدمة عبر مجتمعات الكليات والقنوات المعتمدة.", note: "نعلن ما هو متاح فقط، ولا نعرض وعودًا أو نتائج قبل توثيقها." },
     cta: { exploreFaculties: "تعرّف إلى كلياتنا", volunteer: "انضم إلى الفريق" }
   },
   en: {
@@ -55,7 +55,7 @@ export const aboutContent = {
       { id: "belonging", title: "Student belonging", description: "We connect faculties through one identity that respects every community." }
     ],
     currentScope: { title: "Our current scope", items: ["Multi-faculty student communities at the Syrian Private University.", "Knowledge sharing, student support, and service-oriented guidance.", "Volunteer work and initiatives that strengthen belonging and cooperation.", "Digital tools that support community work when available and approved."] },
-    timeline: { title: "Journey milestones", description: "Verified milestones and dates will be added after the team’s official record is reviewed and approved.", note: "No unverified dates or achievements are displayed." },
+    howWeWork: { title: "How we work", description: "We begin with a clear student need, then share knowledge and organize service through faculty communities and approved channels.", note: "We publish only what is available and do not present promises or results before they are verified." },
     cta: { exploreFaculties: "Explore our faculties", volunteer: "Join the team" }
   }
 } satisfies Localized<AboutContent>;

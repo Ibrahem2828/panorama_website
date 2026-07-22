@@ -1,5 +1,5 @@
 export type NavItem = {
-  key: "home" | "about" | "faculties" | "services" | "initiatives" | "volunteer" | "platform" | "contact";
+  key: "home" | "about" | "faculties" | "services" | "volunteer" | "platform" | "contact";
   href: string;
 };
 
@@ -8,7 +8,6 @@ export const navItems: NavItem[] = [
   { key: "about", href: "/about" },
   { key: "faculties", href: "/faculties" },
   { key: "services", href: "/services" },
-  { key: "initiatives", href: "/initiatives" },
   { key: "volunteer", href: "/volunteer" },
   { key: "platform", href: "/platform" },
   { key: "contact", href: "/contact" },
@@ -18,7 +17,6 @@ export const footerLinks = [
   { key: "about", href: "/about" },
   { key: "faculties", href: "/faculties" },
   { key: "services", href: "/services" },
-  { key: "initiatives", href: "/initiatives" },
   { key: "volunteer", href: "/volunteer" },
   { key: "platform", href: "/platform" },
   { key: "faq", href: "/faq" },

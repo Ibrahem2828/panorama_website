@@ -46,7 +46,13 @@ function publicValue(value?: string): string | undefined {
   return trimmed ? trimmed : undefined;
 }
 
-const canonicalUrl = publicValue(process.env.NEXT_PUBLIC_SITE_URL) || "https://بانوراما.tech";
+export const CANONICAL_HOST = "xn--mgbaab0cxheq.tech";
+export const CANONICAL_ORIGIN = "https://xn--mgbaab0cxheq.tech";
+
+// The public canonical origin is deliberately not environment-overridable.
+// This avoids accidentally emitting localhost, an IP address, or a retired
+// hostname into canonical, Open Graph, sitemap, or structured-data URLs.
+const canonicalUrl = CANONICAL_ORIGIN;
 const generalEmail = publicValue(process.env.NEXT_PUBLIC_CONTACT_EMAIL) || "panoramacompany31@gmail.com";
 const instagramUrl = publicValue(process.env.NEXT_PUBLIC_INSTAGRAM_URL) || "https://www.instagram.com/company.panorama?utm_source=qr&igsh=ZTZ1Z21wNG54ZWVx";
 const facebookUrl = publicValue(process.env.NEXT_PUBLIC_FACEBOOK_URL) || "https://www.facebook.com/share/1CvmsKTNKV/";
@@ -54,8 +60,10 @@ const facebookUrl = publicValue(process.env.NEXT_PUBLIC_FACEBOOK_URL) || "https:
 export const featureFlags: FeatureFlags = {
   showNews: false,
   showGallery: false,
-  showVolunteerForm: true,
-  showContactForm: true,
+  // Do not render a form until it has a real, reviewed submission endpoint.
+  // Contact remains available through the verified email channel.
+  showVolunteerForm: false,
+  showContactForm: false,
   showPlatformDownload: false,
   showWhatsApp: false,
   showMap: false,
@@ -79,11 +87,16 @@ export const socialLinks: SocialLinkConfig[] = [
   { platform: "instagram", url: instagramUrl, label: { ar: "إنستغرام بانوراما", en: "Panorama on Instagram" }, enabled: true },
   { platform: "facebook", url: facebookUrl, label: { ar: "فيسبوك بانوراما", en: "Panorama on Facebook" }, enabled: true },
   { platform: "whatsapp", url: contact.whatsappUrl, label: { ar: "واتساب بانوراما", en: "Panorama on WhatsApp" }, enabled: featureFlags.showWhatsApp },
-  { platform: "telegram", url: publicValue(process.env.NEXT_PUBLIC_TELEGRAM_URL), label: { ar: "تيليغرام بانوراما", en: "Panorama on Telegram" }, enabled: true },
-  { platform: "youtube", url: publicValue(process.env.NEXT_PUBLIC_YOUTUBE_URL), label: { ar: "يوتيوب بانوراما", en: "Panorama on YouTube" }, enabled: true },
-  { platform: "linkedin", url: publicValue(process.env.NEXT_PUBLIC_LINKEDIN_URL), label: { ar: "لينكدإن بانوراما", en: "Panorama on LinkedIn" }, enabled: true },
-  { platform: "tiktok", url: publicValue(process.env.NEXT_PUBLIC_TIKTOK_URL), label: { ar: "تيك توك بانوراما", en: "Panorama on TikTok" }, enabled: true },
+  // Additional channels stay hidden until an owner verifies and enables them.
+  { platform: "telegram", url: publicValue(process.env.NEXT_PUBLIC_TELEGRAM_URL), label: { ar: "تيليغرام بانوراما", en: "Panorama on Telegram" }, enabled: false },
+  { platform: "youtube", url: publicValue(process.env.NEXT_PUBLIC_YOUTUBE_URL), label: { ar: "يوتيوب بانوراما", en: "Panorama on YouTube" }, enabled: false },
+  { platform: "linkedin", url: publicValue(process.env.NEXT_PUBLIC_LINKEDIN_URL), label: { ar: "لينكدإن بانوراما", en: "Panorama on LinkedIn" }, enabled: false },
+  { platform: "tiktok", url: publicValue(process.env.NEXT_PUBLIC_TIKTOK_URL), label: { ar: "تيك توك بانوراما", en: "Panorama on TikTok" }, enabled: false },
 ];
+
+// These are the only owner-supplied, verified organization profiles. Keep
+// unverified or future social channels out of Organization.sameAs.
+export const verifiedOrganizationSameAs = [instagramUrl, facebookUrl] as const;
 
 export const site = {
   name: "Panorama",
@@ -102,6 +115,7 @@ export const site = {
     logo: "/Logos/اساسي.png",
     supportLogo: "/Logos/اساسي.png",
     defaultOpenGraphImage: "/Logos/اساسي.png",
+    favicon: "/favicon-48.png",
   },
   facultyContactOverrides: {} as Record<string, FacultyContactOverride>,
   featureFlags,

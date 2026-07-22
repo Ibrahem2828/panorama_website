@@ -5,7 +5,7 @@
 تم طلب هذه المسارات في العربية والإنجليزية، وكانت جميعها `200`:
 
 - `/`, `/about`, `/faculties`, `/services`, `/initiatives`, `/volunteer`, `/platform`, `/impact`, `/news`, `/gallery`, `/faq`, `/contact`, `/privacy`, `/terms`.
-- تفاصيل الكليات الثمانية: `informatics`, `foundation-requirements`, `petroleum`, `clinical`, `pharmacy`, `medicine`, `dentistry`, `business-administration`.
+- تفاصيل الكليات الست: `informatics`, `petroleum`, `pharmacy`, `medicine`, `dentistry`, `business-administration`.
 - النسخ الإنجليزية المقابلة تحت `/en`.
 
 الحصيلة: 22 مساراً عربياً + 22 مساراً إنجليزياً = **44/44 ناجحاً**.
