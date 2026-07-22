@@ -8,7 +8,7 @@
 
 ## 2. Configure the existing Coolify resource
 
-Coolify defaults to Nixpacks. The failed deployment used that default, as shown by the `nixpacks plan` line in its log. Merely committing a Dockerfile does not change the build pack of an existing resource.
+Dockerfile-first is the sole production strategy: this repository intentionally has no `nixpacks.toml`. If the Coolify UI defaults the existing resource to Nixpacks, explicitly select **Dockerfile** before redeploying. Do not configure Nixpacks commands alongside this Dockerfile.
 
 Open the application resource in Coolify and set these values before clicking **Redeploy**:
 
@@ -18,10 +18,13 @@ Open the application resource in Coolify and set these values before clicking **
 | Dockerfile Location | `/Dockerfile` |
 | Base Directory | `/` |
 | Static Site | Disabled |
+| Publish Directory | Empty |
 | Port Exposes | `3000` |
 | Branch | `main` |
 | Inject Build Args | Enabled (default) |
 | Install / Build / Start command overrides | Empty |
+| Custom Docker Options | Empty |
+| Use Build Server | Disabled unless deliberately configured |
 
 The Dockerfile pins Node `22.23.1-bookworm-slim`, installs the lockfile with `npm ci`, runs type checking, linting, tests, and the production build. The runtime image contains only the standalone Next.js artifacts, listens on `0.0.0.0:3000`, runs as an unprivileged user, and exposes an HTTP health check. Keep Build Args injection enabled so owner-approved `NEXT_PUBLIC_*` values reach the Dockerfile `ARG` declarations.
 

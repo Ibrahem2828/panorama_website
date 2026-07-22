@@ -27,6 +27,7 @@ ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL} \
 
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
+RUN test -f /app/Dockerfile
 
 # A Docker image is only produced when the exact release gates pass.
 RUN npm run type-check \

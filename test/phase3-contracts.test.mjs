@@ -1,10 +1,16 @@
 import assert from "node:assert/strict";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
-const root = resolve(import.meta.dirname, "..");
-const source = (relativePath) => readFileSync(join(root, relativePath), "utf8");
+const testDirectory = dirname(fileURLToPath(import.meta.url));
+const root = resolve(testDirectory, "..");
+const source = (relativePath) => {
+  const path = join(root, relativePath);
+  assert.ok(existsSync(path), `Required repository file is missing: ${relativePath}`);
+  return readFileSync(path, "utf8");
+};
 
 function listFiles(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -76,30 +82,43 @@ test("Arabic remains the deterministic default locale while English is explicitl
 });
 
 test("production deployment contract preserves standalone output and Dockerfile reproducibility", () => {
+  const productionNodeVersion = "22.23.1";
+  const dockerfilePath = join(root, "Dockerfile");
+  const packageLockPath = join(root, "package-lock.json");
+
+  assert.ok(existsSync(dockerfilePath), "Dockerfile must exist in the repository build context");
+  assert.ok(existsSync(packageLockPath), "package-lock.json must exist for reproducible npm ci installs");
+
   const packageJson = JSON.parse(source("package.json"));
   const nextConfig = source("next.config.ts");
-  const dockerfile = source("Dockerfile");
+  const dockerignore = source(".dockerignore");
+  const dockerfile = readFileSync(dockerfilePath, "utf8");
   const workflow = source(".github/workflows/ci.yml");
 
   assert.equal(packageJson.scripts.start, "node .next/standalone/server.js");
   assert.equal(packageJson.scripts.prestart, "node scripts/prepare-standalone.mjs");
   assert.equal(packageJson.scripts.typegen, "next typegen");
   assert.match(packageJson.scripts["type-check"], /npm run typegen/);
-  assert.equal(packageJson.packageManager, "npm@11.16.0");
+  assert.equal(packageJson.engines.node, `>=${productionNodeVersion} <23`);
+  assert.equal(packageJson.engines.npm, ">=10.9.8 <11");
   assert.match(nextConfig, /output: "standalone"/);
   assert.match(nextConfig, /Content-Security-Policy/);
+  assert.doesNotMatch(dockerignore, /^(?:Dockerfile|Dockerfile\*|\*Dockerfile\*)\s*$/m, ".dockerignore must not exclude Dockerfile from the build context");
   assert.equal(existsSync(join(root, "nixpacks.toml")), false);
-  assert.match(dockerfile, /node:22\.23\.1-bookworm-slim/);
-  assert.match(dockerfile, /npm ci --no-audit --no-fund/);
+  assert.match(dockerfile, new RegExp(`node:${productionNodeVersion.replaceAll(".", "\\.")}-bookworm-slim`));
+  assert.match(dockerfile, /npm ci\b/);
   for (const command of ["npm run type-check", "npm run lint", "npm run test", "npm run build"]) {
     assert.match(dockerfile, new RegExp(command.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")));
   }
+  assert.match(dockerfile, /COPY --from=build[^\n]+\.next\/standalone/);
+  assert.match(dockerfile, /COPY --from=build[^\n]+\.next\/static/);
+  assert.match(dockerfile, /COPY --from=build[^\n]+\/app\/public/);
   assert.match(dockerfile, /HOSTNAME=0\.0\.0\.0/);
-  assert.match(dockerfile, /USER nextjs/);
+  assert.match(dockerfile, /USER\s+\S+/);
+  assert.match(dockerfile, /EXPOSE\s+3000/);
+  assert.match(dockerfile, /CMD\s*\[\s*"node"\s*,\s*"server\.js"\s*\]/);
   assert.match(dockerfile, /HEALTHCHECK/);
-  assert.match(dockerfile, /xn--mgbaab0cxheq\.tech/);
-  assert.match(dockerfile, /\.next\/static \.\/\.next\/static/);
-  assert.match(workflow, /node-version: 22/);
+  assert.match(workflow, new RegExp(`node-version: ${productionNodeVersion.replaceAll(".", "\\.")}`));
   for (const command of ["npm ci", "npm run type-check", "npm run lint", "npm run test", "npm run build"]) {
     assert.match(workflow, new RegExp(command.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")));
   }

@@ -1,49 +1,36 @@
-# Repository readiness report
+# Production readiness report
 
-**Prepared:** 2026-07-21  
-**Scope:** GitHub upload, reproducible npm install, standalone production output, and Coolify/Dockerfile deployment preparation.
+**Prepared:** 2026-07-22
+**Scope:** reproducible Next.js standalone output, Dockerfile-first deployment, and Coolify configuration.
 
-## Source-control hygiene
+## Authoritative deployment contract
 
-- `.gitignore` excludes dependency folders, Next build output, environments, logs, coverage, screenshots, and generated `*.tsbuildinfo` files.
-- `.gitattributes` normalizes text to LF for Linux deployment and marks binary assets correctly.
-- `.env.example` is the public configuration template; no secret-bearing `.env` file is tracked.
-- GitHub CI and Dependabot configuration are source controlled.
+- The production definition is [`../Dockerfile`](../Dockerfile). There is no `nixpacks.toml` fallback.
+- Node `22.23.1` is pinned consistently in the Docker image, `.nvmrc`, `package.json` engines, and GitHub Actions.
+- The image uses `npm ci`, then type checking, linting, all repository tests, and `next build` before producing a runtime stage.
+- The runtime stage contains only `public`, `.next/standalone`, and `.next/static`; it runs `server.js` as the unprivileged `nextjs` user on `0.0.0.0:3000` and has a Node-based health check.
+- `.dockerignore` excludes generated output, dependencies, Git history, environment files, and editor artifacts, but deliberately includes `Dockerfile` and all required build inputs.
 
-## Build and runtime contract
-
-- `package-lock.json` is present and `npm ci` is mandatory in automation.
-- `npm run type-check` invokes `next typegen` before TypeScript, so generated Next route types are available in a clean checkout; `next-env.d.ts` is generated and ignored rather than tracked.
-- Next.js standalone output remains enabled; the start command remains `node .next/standalone/server.js`.
-- `scripts/prepare-standalone.mjs` supplies public and static assets to a direct standalone run.
-- The Dockerfile pins Node `22.23.1-bookworm-slim` for Coolify while the package supports the verified local Node 20.19.6 through Node 22.
-- The Docker image is multi-stage, contains only standalone runtime artifacts, runs as an unprivileged user, and includes an HTTP health check.
-
-## Verification performed on 2026-07-21
+## Verification on 2026-07-22
 
 | Check | Result |
 | --- | --- |
-| `npm ci` | Passed from the committed lockfile (415 packages) |
-| `npm run type-check` | Passed; `next typegen` generated route types first |
+| Clean `npm ci` | Passed; 415 packages installed from `package-lock.json` |
+| `npm run type-check` | Passed; `next typegen` completed |
 | `npm run lint` | Passed |
-| `npm run test` | Passed, 8/8 tests |
+| `npm run test` | Passed, 8/8 |
 | `npm run build` | Passed with Next.js 16.2.10 standalone output |
-| Standalone runtime | Passed with `HOSTNAME=0.0.0.0 PORT=3000 npm run start` |
-| HTTP route check | 44 public locale routes returned 200 with required metadata and security headers |
-| Error-route check | Four invalid paths returned 404; faculty 404 responses had `noindex` and all security headers |
-| Static assets | CSS was served with HTTP 200 by the direct standalone server |
+| Direct standalone runtime | Started on `0.0.0.0:3000` as documented |
+| Route smoke test | 24 valid locale/faculty routes returned 200; documents returned 200; invalid route and invalid faculty slug returned safe 404s |
+| Static runtime assets | 19 CSS/JS bundles and 29 published public assets returned 200; configured logo paths have zero Linux case mismatches |
+| Docker Compose syntax | `docker compose config --quiet` passed |
 
-`npm audit --omit=dev` still reports two moderate advisories through the nested PostCSS dependency in `next@16.2.10`. Registry verification on this date confirmed that 16.2.10 is the latest stable Next release; `npm audit fix --force` proposes an unsafe breaking downgrade to Next 9.3.3. This was not applied. See `KNOWN_LIMITATIONS.md` for the risk assessment and required owner decision.
+The local host running these checks has Node 20.19.6/npm 11.16.0, so npm emits an engine warning after the production contract was pinned to Node 22.23.1/npm 10.9.8. That warning does not alter the successful checks. The Docker build is the authoritative Node 22/npm 10 validation.
 
-## Security hardening
+## Current external blocker
 
-- Production responses set Content Security Policy, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, cross-origin isolation headers, and disabled DNS prefetch.
-- The custom faculty 404 response sets the same headers and `X-Robots-Tag: noindex`.
-- `poweredByHeader` is disabled; compression and React strict mode remain enabled.
-- No CSP nonce is used because this Next.js build requires inline framework/bootstrap styles and scripts. The policy restricts all resource classes to same-origin while allowing only the inline content Next needs. Re-test the policy whenever scripts, analytics, embeds, or remote assets are introduced.
+The repository-level Docker context defect is repaired, but the local Docker engine is unavailable: Docker Desktop reported approximately 757 MB free disk space while its recovery/update requires approximately 3.46 GB, and `com.docker.service` cannot be started by this session. Consequently, no local Docker image ID, image size, container runtime, or Docker health status can honestly be recorded yet. See [DEPLOYMENT_FAILURE_RESOLUTION.md](DEPLOYMENT_FAILURE_RESOLUTION.md).
 
-## Deliberate exclusions
+## Security decision required
 
-- No GitHub push, Coolify application creation, DNS edit, TLS certificate issuance, or environment-variable write was performed because those require owner credentials and external authority.
-- Docker image build could not be executed in this workspace because Docker Desktop's Linux daemon is unavailable. The Dockerfile is contract-tested; Coolify/Dockerfile is the primary deployment path and must perform the authoritative image build after the Coolify build-pack setting is changed.
-- Legal/content approvals remain governed by the existing owner checklist.
+`npm audit --omit=dev` reports three production dependency advisories: two high (`next` via `sharp`) and one moderate (`next` via nested PostCSS). The audit's only automatic fix is an unsafe major downgrade to Next `9.3.3`, so it was not applied. The current Sharp advisory identifies `0.35.0` as the first patched version, but any Next/Sharp remediation must be selected as a compatible, supported update and then verified through the Docker build and runtime gates. Do not run `npm audit fix --force`.

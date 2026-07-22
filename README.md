@@ -7,8 +7,7 @@ The completed Phase 1 and Phase 2 information architecture, visual identity, mot
 ## Runtime contract
 
 - Next.js `16.2.10` with `output: "standalone"`.
-- Local Node contract: `>=20.19.0 <23`; `.nvmrc` pins the verified local Node `20.19.6`.
-- GitHub CI, Docker, and Coolify run Node 22.
+- Local, CI, Docker, and Coolify use Node `22.23.1`; `.nvmrc` pins that verified production runtime.
 - npm lockfile is authoritative. Use `npm ci`; do not replace it with an unpinned install in CI or deployment.
 - The production server is `node .next/standalone/server.js`, started through `npm run start`. Do not use `next start` while standalone output is enabled.
 
@@ -52,7 +51,7 @@ Unknown optional contact and social values must remain empty. The UI hides uncon
 
 ## Repository quality gates
 
-GitHub Actions runs `npm ci`, type checking, linting, tests, and the production build on pushes and pull requests to `main`. Dependabot opens weekly npm update pull requests for review.
+GitHub Actions runs `npm ci`, type checking, linting, tests, and the production build on Node `22.23.1` for pushes and pull requests to `main`. Dependabot opens weekly npm update pull requests for review.
 
 Before a release, run the same commands locally and review the release checklist. Do not commit `node_modules`, `.next`, logs, `.env` files, screenshots, or generated TypeScript build-info files.
 
