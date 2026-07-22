@@ -28,4 +28,5 @@ jobs:
       - run: npm run type-check
       - run: npm run lint
       - run: npm run test
+      - run: npm run test:repository
       - run: npm run build

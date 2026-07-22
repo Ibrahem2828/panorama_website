@@ -93,7 +93,6 @@ test("production deployment contract preserves standalone output and Dockerfile 
   const nextConfig = source("next.config.ts");
   const dockerignore = source(".dockerignore");
   const dockerfile = readFileSync(dockerfilePath, "utf8");
-  const workflow = source(".github/workflows/ci.yml");
 
   assert.equal(packageJson.scripts.start, "node .next/standalone/server.js");
   assert.equal(packageJson.scripts.prestart, "node scripts/prepare-standalone.mjs");
@@ -118,10 +117,6 @@ test("production deployment contract preserves standalone output and Dockerfile 
   assert.match(dockerfile, /EXPOSE\s+3000/);
   assert.match(dockerfile, /CMD\s*\[\s*"node"\s*,\s*"server\.js"\s*\]/);
   assert.match(dockerfile, /HEALTHCHECK/);
-  assert.match(workflow, new RegExp(`node-version: ${productionNodeVersion.replaceAll(".", "\\.")}`));
-  for (const command of ["npm ci", "npm run type-check", "npm run lint", "npm run test", "npm run build"]) {
-    assert.match(workflow, new RegExp(command.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")));
-  }
 });
 
 test("content source contains no placeholder prose", () => {

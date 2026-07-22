@@ -10,6 +10,7 @@
 - The image uses `npm ci`, then type checking, linting, all repository tests, and `next build` before producing a runtime stage.
 - The runtime stage contains only `public`, `.next/standalone`, and `.next/static`; it runs `server.js` as the unprivileged `nextjs` user on `0.0.0.0:3000` and has a Node-based health check.
 - `.dockerignore` excludes generated output, dependencies, Git history, environment files, and editor artifacts, but deliberately includes `Dockerfile` and all required build inputs.
+- `.github` remains deliberately excluded from the Docker context. `npm run test:repository` verifies the GitHub Actions workflow only in a full Git checkout; the Docker deployment-contract test has no repository-metadata dependency.
 
 ## Verification on 2026-07-22
 
@@ -19,6 +20,7 @@
 | `npm run type-check` | Passed; `next typegen` completed |
 | `npm run lint` | Passed |
 | `npm run test` | Passed, 8/8 |
+| `npm run test:repository` | Passed; verifies Node 22 and all required GitHub Actions gates in `.github/workflows/ci.yml` |
 | `npm run build` | Passed with Next.js 16.2.10 standalone output |
 | Direct standalone runtime | Started on `0.0.0.0:3000` as documented |
 | Route smoke test | 24 valid locale/faculty routes returned 200; documents returned 200; invalid route and invalid faculty slug returned safe 404s |

@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "typegen": "next typegen",
     "type-check": "npm run typegen && tsc --noEmit",
-    "test": "node --test"
+    "test": "node --test",
+    "test:repository": "node scripts/verify-repository-contract.mjs"
   },
   "engines": {
     "node": ">=22.23.1 <23",
