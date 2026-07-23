@@ -4,7 +4,11 @@ import { Languages } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname } from "@/i18n/routing";
 
-export function LanguageSwitcher() {
+type LanguageSwitcherProps = {
+  onBeforeNavigate?: () => void;
+};
+
+export function LanguageSwitcher({ onBeforeNavigate }: LanguageSwitcherProps) {
   const locale = useLocale();
   const t = useTranslations("nav");
   const pathname = usePathname();
@@ -17,7 +21,10 @@ export function LanguageSwitcher() {
     <button
       aria-label={t("switchLanguageAria")}
       className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-surface)_88%,transparent)] px-3 text-xs font-extrabold text-[var(--color-foreground)] transition-[transform,border-color,background-color] duration-150 hover:-translate-y-px hover:border-[var(--color-brand-gold)] hover:bg-[var(--color-surface-elevated)]"
-      onClick={() => window.location.assign(targetPath)}
+      onClick={() => {
+        onBeforeNavigate?.();
+        window.location.assign(targetPath);
+      }}
       type="button"
     >
       <Languages aria-hidden="true" className="h-4 w-4" />

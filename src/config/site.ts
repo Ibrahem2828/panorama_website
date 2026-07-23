@@ -56,6 +56,7 @@ const canonicalUrl = CANONICAL_ORIGIN;
 const generalEmail = publicValue(process.env.NEXT_PUBLIC_CONTACT_EMAIL) || "panoramacompany31@gmail.com";
 const instagramUrl = publicValue(process.env.NEXT_PUBLIC_INSTAGRAM_URL) || "https://www.instagram.com/company.panorama?utm_source=qr&igsh=ZTZ1Z21wNG54ZWVx";
 const facebookUrl = publicValue(process.env.NEXT_PUBLIC_FACEBOOK_URL) || "https://www.facebook.com/share/1CvmsKTNKV/";
+const volunteerApplicationUrl = "https://docs.google.com/forms/d/e/1FAIpQLSc413UDexlx0vcXkLEHLld8yU7-1DTUvBe9iKT1gnk2hjqmLQ/viewform?usp=dialog";
 
 export const featureFlags: FeatureFlags = {
   showNews: false,
@@ -108,6 +109,7 @@ export const site = {
     en: "Panorama is a student volunteer community that began at the Syrian Private University to connect knowledge, service, and impact.",
   },
   domain: canonicalUrl,
+  volunteerApplicationUrl,
   domainLabel: "بانوراما.tech",
   contact,
   socialLinks,

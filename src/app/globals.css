@@ -73,13 +73,11 @@
 }
 
 html {
-  min-width: 320px;
   scroll-behavior: smooth;
   scroll-padding-top: 5.5rem;
 }
 
 body {
-  min-width: 320px;
   margin: 0;
   overflow-x: clip;
   background: var(--color-background);
@@ -288,6 +286,8 @@ img {
   }
 
   .gold-thread {
+    display: block;
+    overflow: hidden;
     color: var(--color-brand-gold);
   }
 
@@ -321,7 +321,7 @@ img {
 @keyframes panorama-drawer-in {
   from {
     opacity: 0;
-    transform: translateY(-0.75rem);
+    transform: translateX(var(--drawer-translate, 100%));
   }
   to {
     opacity: 1;

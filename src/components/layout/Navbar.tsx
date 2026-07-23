@@ -1,7 +1,7 @@
 "use client";
 
 import { Menu } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslations } from "next-intl";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import { Button } from "@/components/ui/Button";
@@ -15,13 +15,16 @@ import { navItems } from "@/data/navigation";
 export function Navbar() {
   const t = useTranslations("nav");
   const pathname = usePathname();
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuPathname, setMenuPathname] = useState<string | null>(null);
+  const menuOpen = menuPathname === pathname;
+  const closeMenu = useCallback(() => setMenuPathname(null), []);
+  const openMenu = useCallback(() => setMenuPathname(pathname), [pathname]);
 
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--color-border)] bg-[color-mix(in_srgb,var(--color-background)_92%,transparent)] backdrop-blur-xl">
       <Container>
         <nav aria-label={t("primaryNavigation")} className="flex min-h-[4.5rem] items-center justify-between gap-3">
-          <Link aria-label={t("homeAria")} className="shrink-0" href="/#top" onClick={() => setMenuOpen(false)}>
+          <Link aria-label={t("homeAria")} className="shrink-0" href="/#top" onClick={closeMenu}>
             <BrandLogo compact priority />
           </Link>
 
@@ -44,13 +47,13 @@ export function Navbar() {
             <Button className="hidden xl:inline-flex" href="/volunteer">
               {t("join")}
             </Button>
-            <button aria-controls="mobile-navigation" aria-expanded={menuOpen} aria-label={menuOpen ? t("closeMenu") : t("openMenu")} className="control-button xl:hidden" onClick={() => setMenuOpen(true)} type="button">
+            <button aria-controls="mobile-navigation" aria-expanded={menuOpen} aria-label={menuOpen ? t("closeMenu") : t("openMenu")} className="control-button xl:hidden" onClick={openMenu} type="button">
               <Menu aria-hidden="true" className="h-5 w-5" />
             </button>
           </div>
         </nav>
       </Container>
-      <MobileNavigation isOpen={menuOpen} items={navItems} onClose={() => setMenuOpen(false)} />
+      <MobileNavigation isOpen={menuOpen} items={navItems} onClose={closeMenu} />
     </header>
   );
 }

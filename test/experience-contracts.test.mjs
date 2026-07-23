@@ -25,11 +25,32 @@ test("mobile header and drawer meet the documented interaction contract", () => 
   const drawer = source("src/components/layout/MobileNavigation.tsx");
   assert.match(navbar, /min-h-\[4\.5rem\]/);
   assert.match(navbar, /Button className="hidden xl:inline-flex"/);
-  assert.match(drawer, /max-h-\[calc\(100dvh-4\.5rem\)\]/);
+  assert.match(navbar, /className="control-button xl:hidden"/);
+  assert.match(drawer, /createPortal/);
+  assert.match(drawer, /document\.body/);
+  assert.match(drawer, /w-\[min\(88vw,22\.5rem\)\]/);
+  assert.match(drawer, /right-0/);
+  assert.match(drawer, /left-0/);
+  assert.match(drawer, /xl:hidden/);
+  assert.doesNotMatch(drawer, /lg:hidden/);
   assert.match(drawer, /document\.body\.style\.overflow = "hidden"/);
   assert.match(drawer, /event\.key === "Escape"/);
   assert.match(drawer, /aria-modal="true"/);
+  assert.match(drawer, /aria-labelledby="mobile-navigation-title"/);
+  assert.match(drawer, /aria-current=/);
+  assert.match(drawer, /LanguageSwitcher onBeforeNavigate=\{onClose\}/);
   assert.match(drawer, /SocialLinks/);
+});
+
+test("the root layout owns the document shell and localizes its direction", () => {
+  const rootLayout = source("src/app/layout.tsx");
+  const localeLayout = source("src/app/[locale]/layout.tsx");
+  assert.match(rootLayout, /getLocale/);
+  assert.match(rootLayout, /<html/);
+  assert.match(rootLayout, /<body/);
+  assert.match(rootLayout, /dir=\{isArabic \? "rtl" : "ltr"\}/);
+  assert.doesNotMatch(localeLayout, /<html/);
+  assert.doesNotMatch(localeLayout, /<body/);
 });
 
 test("compact brand treatment uses a symbol and one localized name", () => {

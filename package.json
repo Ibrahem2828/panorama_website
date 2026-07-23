@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "typegen": "next typegen",
     "type-check": "npm run typegen && tsc --noEmit",
-    "test": "node --test",
+    "test": "node scripts/run-node-tests.mjs",
+    "test:e2e": "playwright test",
     "test:repository": "node scripts/verify-repository-contract.mjs"
   },
   "engines": {
@@ -31,7 +32,9 @@
     "tailwind-merge": "^2.6.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
     "@eslint/eslintrc": "^3.3.1",
+    "@playwright/test": "^1.61.1",
     "@swc/helpers": "^0.5.23",
     "@types/node": "^22.15.29",
     "@types/react": "^19.0.12",
